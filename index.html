@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gigahub Website</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="icon" href="./images/image.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="lib/ionicons/css/ionicons.min.css" rel="stylesheet">
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+    <script src="./js/main.js"></script>
+</head>
+<body>
+    <header class="header">
+        <a href="#" class="logo"><img src="./images/LOGO_GIGA.jpg" alt=""></a>
+        <div class="fas fa-bars"></div>
+        <nav class="navbar">
+            <ul>
+                <li><a href="#home">home</a></li>
+                <li><a href="#about">about</a></li>
+                <li><a href="#service">services</a></li>
+                <li><a href="#portfolio">portfolio</a></li>
+                <!--<li><a href="#team">team</a></li>-->
+               <!-- <li><a href="careers.html">career</a></li>-->
+                <li><a href="#contact">contact</a></li>
+               <!-- <li><a href="#faq">FAQ</a></li> -->
+                 
+
+    <!-- Admin Login 
+    <a href="admin-login.html" class="btn btn-warning" 
+       style="padding: 0.8rem 1.5rem; font-size: 1.2rem; border-radius: 8px; margin-left: 0.5rem;">
+       Admin Login
+    </a>-->
+
+
+
+            <div class="auth-buttons" style="margin-left: 1rem;">
+  <!-- Login & Signup (shown if not logged in) -->
+  <a href="login.html" class="btn btn-primary" id="loginBtn">Login</a>
+  <a href="signup.html" class="btn btn-outline-primary" id="signupBtn">Signup</a>
+
+  <!-- User menu (shown if logged in) -->
+  <div class="user-menu" id="userMenu" style="display:none; position: relative;">
+    <button class="user-button" id="userButton" style="
+      background: #007BFF; 
+      border-radius: 50%; 
+      width: 40px; 
+      height: 40px; 
+      color: #fff; 
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+    "></button>
+    <!-- <ul class="dropdown" id="dropdown" style="
+      display:none;
+      position: absolute;
+      top: 50px;
+      right: 0;
+      background: #fff;
+      list-style: none;
+      padding: 5px 0;
+      border-radius: 5px;
+      min-width: 120px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      color: #000;
+    ">
+      <li id="logoutBtn" style="padding: 10px 15px; cursor: pointer;">Logout</li>
+    </ul> 
+   <ul class="dropdown" id="dropdown" style="
+  display:none;
+  position: absolute;
+  top: 50px;
+  right: 0;
+  background: #fff;
+  list-style: none;
+  padding: 10px;
+  border-radius: 8px;
+  min-width: 200px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  color: #000;
+">
+  <li id="userDetails" style="padding: 10px; border-bottom: 1px solid #ddd;">
+    <strong id="profileName">Name</strong><br>
+    <span id="profileEmail" style="font-size: 0.9rem; color: gray;">Email</span>
+  </li>
+  <li id="logoutBtn" style="padding: 10px; cursor: pointer; color: red;">Logout</li>
+</ul>-->
+
+
+<!-- a new drop down option-->
+
+
+
+
+<ul class="dropdown" id="dropdown" style="
+  display:none;
+  position: absolute;
+  top: 50px;
+  right: 0;
+  background: #fff;
+  list-style: none;
+  padding: 10px;
+  border-radius: 8px;
+  min-width: 200px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  color: #000;
+">
+  <li id="userDetails" style="padding: 10px; border-bottom: 1px solid #ddd;">
+    <strong id="profileName">Name</strong><br>
+    <span id="profileEmail" style="font-size: 0.9rem; color: gray;">Email</span>
+  </li>
+
+  <li style="padding: 10px; cursor: pointer;">
+    <a href="my-enquiries.html" style="padding:20px;color: #007BFF; text-decoration: none;">📋 My Enquiries</a>
+  </li>
+
+  <li id="logoutBtn" style="padding: 10px; cursor: pointer; color: red;">Logout</li>
+</ul>
+
+
+
+  </div>
+</div>
+
+            </ul>
+        </nav>
+    </header>
+
+  <section id="home" class="home">
+      <h1>Bring your Business Online</h1>
+      <h2>with IT Company Services</h2>
+    <!--<div class="wave wave1"></div>
+    <div class="wave wave2"></div>
+    <div class="wave wave3"></div>-->
+  </section>
+
+  <section id="about" class="about">
+  <div class="container">
+    <div class="row align-items-center">
+      
+      <!-- Image on the left -->
+      <div class="col-lg-6 col-md-12">
+        <img src="./images/about_us.jpeg" alt="About Us" class="about-img">
+      </div>
+      
+      <!-- Text content on the right -->
+      <div class="col-lg-6 col-md-12 content">
+        <h1 class="heading">About Us</h1>
+        <h3>Empowering Your Brand with Cutting-Edge IT Solutions</h3>
+        <p>
+          We are a dedicated team of IT professionals committed to providing <strong>end-to-end services</strong> for your business. 
+          From web development to digital solutions, we ensure your brand thrives in the digital world.
+        </p>
+        <p>
+          With our expertise combined, you gain a team capable of transforming ideas into impactful solutions that elevate your business.
+        </p>
+        <!--<a href="services.html"><button class="btn btn-primary">Read More</button></a>-->
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  <div class="pt-5 pb-5" style="background-color: #f2f2f2;">
+    <div class="container">
+      <div class="row">
+        <div class="section-head col-sm-12" id="service">
+          <h1>Our Services</h1>
+          <p>We help you to build high-quality digital solutions and products as well as deliver a wide range of related professional services. We are providing world-class service to our clients.
+            </p>
+        </div>
+        <div class="row">
+        <!-- Service 1 -->
+        <div class="col-lg-4 col-sm-6 mb-4">
+          <div class="item text-center p-3 bg-white shadow-sm rounded">
+            <img src="images/b2b_pc.jpg" alt="B2B Laptops" class="service-img">
+            <h6 class="mt-3">B2B Laptops, PC, Mainframes & Computers</h6>
+            <p>We provide high-quality laptops, desktops, and mainframes for your business needs.</p>
+            <a href="enquiry.html" class="btn btn-outline-primary mt-2">Enquire Now</a>
+          </div>
+        </div>
+
+        <!-- Service 2 -->
+        <div class="col-lg-4 col-sm-6 mb-4">
+          <div class="item text-center p-3 bg-white shadow-sm rounded">
+            <img src="images/peripherals.jpg" alt="Hardware Peripherals" class="service-img">
+            <h6 class="mt-3">Computer & Laptop Hardware Peripherals</h6>
+            <p>Find top-notch computer accessories and peripherals for your systems.</p>
+            <a href="enquiry.html" class="btn btn-outline-primary mt-2">Enquire Now</a>
+          </div>
+        </div>
+
+        <!-- Service 3 -->
+        <div class="col-lg-4 col-sm-6 mb-4">
+          <div class="item text-center p-3 bg-white shadow-sm rounded">
+            <img src="images/Computer-on-Hire.jpg" alt="Computers on Hire" class="service-img">
+            <h6 class="mt-3">Computers on Hire</h6>
+            <p>Get computers and laptops on hire for short-term or long-term business use.</p>
+            <a href="enquiry.html" class="btn btn-outline-primary mt-2">Enquire Now</a>
+          </div>
+        </div>
+
+        <!-- Service 4 -->
+        <div class="col-lg-4 col-sm-6 mb-4">
+          <div class="item text-center p-3 bg-white shadow-sm rounded">
+            <img src="images/network.jpg" alt="Networking Solutions" class="service-img">
+            <h6 class="mt-3">Networking Solutions</h6>
+            <p>Reliable and efficient networking solutions to keep your business connected.</p>
+            <a href="enquiry.html" class="btn btn-outline-primary mt-2">Enquire Now</a>
+          </div>
+        </div>
+
+        <!-- Service 5 -->
+        <div class="col-lg-4 col-sm-6 mb-4">
+          <div class="item text-center p-3 bg-white shadow-sm rounded">
+            <img src="images/backup.jpg" alt="Data Recovery" class="service-img">
+            <h6 class="mt-3">Data Recovery & Backup</h6>
+            <p>Secure your important files with our backup and recovery solutions.</p>
+            <a href="enquiry.html" class="btn btn-outline-primary mt-2">Enquire Now</a>
+          </div>
+        </div>
+
+        <!-- Service 6 -->
+        <div class="col-lg-4 col-sm-6 mb-4">
+          <div class="item text-center p-3 bg-white shadow-sm rounded">
+            <img src="images/It_support.jpg" alt="IT Support" class="service-img">
+            <h6 class="mt-3">24/7 IT Support</h6>
+            <p>Our experts are available round the clock to provide IT support for your business.</p>
+            <a href="enquiry.html" class="btn btn-outline-primary mt-2">Enquire Now</a>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+
+  <!--section class="counters">
+    <div class="container">
+        <div>
+            <i class="far fa-clock fa-4x"></i>
+            <div class="counter" data-target="13500">0</div>
+            <h3>Working Hours</h3>
+        </div>
+        <div>
+            <i class="fas fa-gift fa-4x"></i>
+            <div class="counter" data-target="720">0</div>
+            <h3>Completed Projects</h3>
+        </div>
+        <div>
+            <i class="fas fa-users fa-4x"></i>
+            <div class="counter" data-target="480">0</div>
+            <h3>Happy Clients</h3>
+        </div>
+        <div>
+            <i class="fas fa-award fa-4x"></i>
+            <div class="counter" data-target="120">0</div>
+            <h3>Awards Received</h3>
+        </div>
+    </div>We
+</section>
+
+<div class="pt-5 pb-5">
+    <div class="container">
+      <div class="row">
+        <div class="section-head-1 col-sm-12" style="text-align: center;">
+          <h4 style="margin-top: -5rem;" id="portfolio"><span>Our</span> Projects</h4>
+          
+          <p>The objective of our company is to give <br>industry-relevant all it services that will help them<br> in securing a better livelihood.
+            </p>
+        </div>
+        
+        <div class="col-lg-4 col-sm-6">
+          
+          <div class="item"> <span class="icon feature_box_col_four"><i class="fa fa-database"></i></span>
+            <h6>Project-1</h6>
+            
+            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor Aenean massa.<br><br><br></p>
+          </div>
+        </div>
+        
+        <div class="col-lg-4 col-sm-6">
+          <div class="item"> <span class="icon feature_box_col_five"><i class="fa fa-upload"></i></span>
+            <h6>Project-2</h6>
+            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor Aenean massa.<br><br><br></p>
+          </div>
+        </div>
+        <div class="col-lg-4 col-sm-6">
+          <div class="item"> <span class="icon feature_box_col_six"><i class="fa fa-camera"></i></span>
+            <h6>Project-3</h6>
+            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor Aenean massa.<br><br><br></p>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="communicate">
+    <h3>Lorem ipsum dolor sit amet consectetur adipisicing elit.</h3>
+    <p>Lorem ipsum dolor sit amet.</p>
+    <a href="#contact"><button class="btn">Contact Now</button></a>
+</div>
+
+<div class="testimonials mt-100">
+    <div class="container">
+        <div class="section-header" style="text-align: center;">
+            <h2 style="margin-top: -15rem;">Testimonials</h2>
+            <p style="font-size: 2rem;">
+                See what people have to say about us
+            </p>
+        </div> 
+
+        <div class="owl-carousel testimonials-carousel">
+            <div class="testimonial-item row align-items-center">
+                <div class="testimonial-img">
+                    <img src="./images/testimonial-1.jpg" alt="Testimonial image">
+                </div>
+                <div class="testimonial-text">
+                    <h3>Person-1</h3>
+                    <h4>Designation</h4>
+                    <p>
+                        Testimonial
+
+                    </p>
+                </div>
+            </div>
+            <div class="testimonial-item row align-items-center">
+                <div class="testimonial-img">
+                    <img src="./images/testimonial-2.jpg" alt="Testimonial image">
+                </div>
+                <div class="testimonial-text">
+                    <h3>Person-2</h3>
+                    <h4>Designation</h4>
+                    <p>
+                        Testimonial
+
+                    </p>
+                </div>
+            </div>
+            <div class="testimonial-item row align-items-center">
+                <div class="testimonial-img">
+                    <img src="./images/testimonial-3.jpg" alt="Testimonial image">
+                </div>
+                <div class="testimonial-text">
+                    <h3>Person-3</h3>
+                    <h4>Designation</h4>
+                    <p>
+                        Testimonial
+
+                    </p>
+                </div>
+            </div>
+            <div class="testimonial-item row align-items-center">
+                <div class="testimonial-img">
+                    <img src="./images/testimonial-4.jpg" alt="Testimonial image">
+                </div>
+                <div class="testimonial-text">
+                    <h3>Person-4</h3>
+                    <h4>Designation</h4>
+                    <p>
+                        Testimonial
+
+                    </p>
+                </div>
+            </div>
+            <div class="testimonial-item row align-items-center">
+                <div class="testimonial-img">
+                    <img src="./images/testimonial-5.jpg" alt="Testimonial image">
+                </div>
+                <div class="testimonial-text">
+                    <h3>Person-5</h3>
+                    <h4>Designation</h4>
+                    <p>
+                        Testimonial
+
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+
+<div class="clients mt-100">
+    <div class="container">
+        <div class="section-header">
+            <h2>Our Clients</h2>
+            <p>
+                We don't just give it services, we build your business.
+            </p>
+        </div>
+        <div class="owl-carousel clients-carousel">
+            <img src="./images/LOGO_GIGA.jpg" alt="Client Logo">
+            <img src="./images/LOGO_GIGA.jpg" alt="Client Logo">
+            <img src="./images/LOGO_GIGA.jpg" alt="Client Logo">
+            <img src="./images/LOGO_GIGA.jpg" alt="Client Logo">
+            <img src="./images/LOGO_GIGA.jpg" alt="Client Logo">
+            <img src="./images/LOGO_GIGA.jpg" alt="Client Logo">
+            <img src="./images/LOGO_GIGA.jpg" alt="Client Logo">
+            <img src="./images/LOGO_GIGA.jpg" alt="Client Logo">
+        </div>
+    </div>
+</div>-->
+<a href="#" class="back-to-top"><i class="ion-ios-arrow-up"></i></a>
+<script src="lib/jquery/jquery.min.js"></script>
+<script src="lib/jquery/jquery-migrate.min.js"></script>
+<script src="lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="lib/easing/easing.min.js"></script>
+<script src="lib/waypoints/waypoints.min.js"></script>
+<script src="lib/counterup/counterup.min.js"></script>
+<script src="lib/owlcarousel/owl.carousel.min.js"></script>
+<script src="lib/lightbox/js/lightbox.min.js"></script>
+
+<!--section class="team" style="margin-top: 7rem;">
+  <h1 class="heading" style="margin-top: -1.5rem;" id="team">our team</h1>
+  <p></p>
+  <div class="row">
+      <div class="card">
+          <div class="image">
+              <img src="./images/pexels-andrea-piacquadio-845434.jpg" alt="Team member 1">
+          </div>
+          <div class="info">
+              <h3>Schott Watkins</h3>
+              <span>Web Developer</span>
+              <div class="icons">
+                  <a href="https://www.facebook.com/" class="fab fa-facebook-f"></a>
+                  <a href="https://twitter.com/login" class="fab fa-twitter"></a>
+                  <a href="https://www.instagram.com/" class="fab fa-instagram"></a>
+                  <a href="https://www.linkedin.com/" class="fab fa-linkedin"></a>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="card">
+          <div class="image">
+              <img src="./images/pexels-vinicius-wiesehofer-1130624.jpg" alt="Team member 1">
+          </div>
+          <div class="info">
+              <h3>Nicole Bell</h3>
+              <span>Mobile Developer</span>
+              <div class="icons">
+                  <a href="https://www.facebook.com/" class="fab fa-facebook-f"></a>
+                  <a href="https://twitter.com/login" class="fab fa-twitter"></a>
+                  <a href="https://www.instagram.com/" class="fab fa-instagram"></a>
+                  <a href="https://www.linkedin.com/" class="fab fa-linkedin"></a>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="card">
+          <div class="image">
+              <img src="./images/pexels-hussein-altameemi-2776353.jpg" alt="Team member 1">
+          </div>
+          <div class="info">
+              <h3>John Doe</h3>
+              <span>Graphic Designer</span>
+              <div class="icons">
+                  <a href="https://www.facebook.com/" class="fab fa-facebook-f"></a>
+                  <a href="https://twitter.com/login" class="fab fa-twitter"></a>
+                  <a href="https://www.instagram.com/" class="fab fa-instagram"></a>
+                  <a href="https://www.linkedin.com/" class="fab fa-linkedin"></a>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="card">
+          <div class="image">
+              <img src="./images/pexels-andrea-piacquadio-745136.jpg" alt="Team member 1">
+          </div>
+          <div class="info">
+              <h3>Rose Matthews</h3>
+              <span>Web Designer</span>
+              <div class="icons">
+                  <a href="https://www.facebook.com/" class="fab fa-facebook-f"></a>
+                  <a href="https://twitter.com/login" class="fab fa-twitter"></a>
+                  <a href="https://www.instagram.com/" class="fab fa-instagram"></a>
+                  <a href="https://www.linkedin.com/" class="fab fa-linkedin"></a>
+              </div>
+          </div>
+      </div>
+  </div>
+</section-->
+
+<section id="contact" class="contact">
+    <h1 class="heading">get in touch</h1>
+</section>
+<div class="contact-in">
+    <div class="contact-map">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d14027.407228713686!2d77.32095495000002!3d28.484009249999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1759159745818!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+    <div class="contact-form">
+        <form id="contactForm">
+            <input type="text" name="name" placeholder="Name" class="contact-form-txt" required>
+            <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" required placeholder="Contact number" maxlength="10" class="contact-form-phone">
+            <input type="email" name="email" placeholder="Email" class="contact-form-email" required>
+            <textarea placeholder="Your Message" name="message" class="contact-form-txtarea" required></textarea>
+            <input type="submit" value="Submit" class="contact-form-btn">
+        </form>
+        <p id="statusMessage" style="margin-top:10px;font-weight:bold;"></p>
+    </div>
+</div>
+
+
+    <!--section class="faq">
+      <h1 class="heading" style="margin-top: -2rem; color: #00bfff;" id="faq">FAQ</h1>
+      <div class="row">
+          <div class="accordion-container">
+              <div class="accordion">
+                  <div class="accordion-header">
+                      <span>+</span>
+                      <h3>How much will it cost?</h3>
+                  </div>
+                  <div class="accordion-body">
+                      <p>To get a better idea of the cost of what you want to build, give us a quick phone call. We’ll ask you a few questions about the nature of the site, what sort of interactivity the site will have, your graphic design needs, etc. 
+                          Then we’ll be able to give you a ballpark figure. 
+                          If you’re still interested, we’ll come to your place of business and come up with a firm quote.</p>
+                  </div>
+              </div>
+              <div class="accordion">
+                  <div class="accordion-header">
+                      <span>+</span>
+                      <h3>How long it takes to design?</h3>
+                  </div>
+                  <div class="accordion-body">
+                      <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Molestias voluptatem officia doloribus modi placeat iure quas cupiditate ex temporibus saepe. Dicta nobis, eum repellat consequatur quidem nemo doloribus maxime? Et..</p>
+                  </div>
+              </div>
+              <div class="accordion">
+                  <div class="accordion-header">
+                      <span>+</span>
+                      <h3>How do I associate with IT Company?</h3>
+                  </div>
+                  <div class="accordion-body">
+                      <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aliquid, quod esse! Distinctio quis molestias ad beatae consectetur. Dolor unde laboriosam eaque aperiam delectus ipsum, error voluptates, itaque maxime magni iusto?.</p>
+                  </div>
+              </div>
+              <div class="accordion">
+                  <div class="accordion-header">
+                      <span>+</span>
+                      <h3>Can you help my current site look more professional?</h3>
+                  </div>
+                  <div class="accordion-body">
+                      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa, cupiditate. Nihil esse reiciendis rem consequatur eos voluptatem explicabo ea consequuntur corrupti sequi incidunt, harum repellendus molestiae perferendis quaerat. Architecto, facere.</p>
+                  </div>
+              </div>
+              <div class="accordion">
+                  <div class="accordion-header">
+                      <span>+</span>
+                      <h3>When do I pay?</h3>
+                  </div>
+                  <div class="accordion-body">
+                      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos cupiditate quasi, odio eius, illo unde iusto fuga ad qui fugit doloribus quas nam dolorem laborum totam recusandae sapiente, dolore repellat?</p>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section-->
+
+    <div class="footer">
+      <div class="footer-top">
+          <div class="container">
+              <div class="row">
+                  <div class="col-lg-3 col-md-6 footer-links">
+                      <h4>About Us</h4>
+                      <ul>
+                          <li><i class="ion-ios-arrow-forward"></i> <a href="#">Home</a></li>
+                          <li><i class="ion-ios-arrow-forward"></i> <a href="#about">About us</a></li>
+                          <li><i class="ion-ios-arrow-forward"></i> <a href="#service">Our services</a></li>
+                          <li><i class="ion-ios-arrow-forward"></i> <a href="#">Terms & condition</a></li>
+                          <li><i class="ion-ios-arrow-forward"></i> <a href="#">Privacy policy</a></li>
+                      </ul>
+                  </div>
+
+                  <div class="col-lg-3 col-md-6 footer-links">
+                      <h4>Useful Links</h4>
+                      <ul>
+                          <li><i class="ion-ios-arrow-forward"></i> <a href="#portfolio">Portfolio</a></li>
+                          <li><i class="ion-ios-arrow-forward"></i> <a href="#team">Team</a></li>
+                          <!-- <li><i class="ion-ios-arrow-forward"></i> <a href="careers.html">Career</a></li> -->
+                          <li><i class="ion-ios-arrow-forward"></i> <a href="#contact">Contact</a></li>
+                          <li><i class="ion-ios-arrow-forward"></i> <a href="#faq">FAQ</a></li>
+                      </ul>
+                  </div>
+
+                  <div class="col-lg-3 col-md-6 footer-contact" style="font-size: 1.5rem;">
+                      <h4>Contact Us</h4>
+                      <p>
+                          1300  Center Avenue<br>
+                          Fresno, California<br>
+                          United States <br>
+                          <strong>Phone:</strong> +123-456-7890<br>
+                          <strong>Email:</strong> info@example.com<br>
+                      </p>
+
+                      <div class="social-links">
+                          <a href="https://www.facebook.com/"><i class="ion-logo-facebook"></i></a>
+                          <a href="https://twitter.com/login?lang=en"><i class="ion-logo-twitter"></i></a>
+                          <a href="https://www.linkedin.com/"><i class="ion-logo-linkedin"></i></a>
+                          <a href="https://www.instagram.com/"><i class="ion-logo-instagram"></i></a>
+                          <a href="https://accounts.google.com/servicelogin/signinchooser?flowName=GlifWebSignIn&flowEntry=ServiceLogin"><i class="ion-logo-googleplus"></i></a>
+                      </div>
+
+                  </div>
+
+                  <div class="col-lg-3 col-md-6 footer-newsletter">
+                      <h4>Subscription</h4>
+                      <p>With Our Skills Put Together, You Get An Ensemble Capable Of Doing Anything And Everything Your Brand Needs. Subscribe Here To Get Our Latest Updates.</p>
+                      <form action="" method="post">
+                          <input type="email" name="email"><input type="submit"  value="Subscribe">
+                      </form>
+                  </div>
+
+              </div>
+          </div>
+      </div>
+
+      <div class="container">
+          <div class="row align-items-center">
+              <div class="col-md-6 copyright" style="color: #fff; font-size: 1.3rem;">
+                  Copyright &copy; 2025 Gigahub Website. All Rights Reserved.
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <a href="#" class="back-to-top"><i class="ion-ios-arrow-up"></i></a>
+  <!-- React app will render inside this div -->
+  <div id="root"></div>
+
+  <script>
+const form = document.getElementById("contactForm");
+const statusMessage = document.getElementById("statusMessage");
+
+form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const formData = {
+        name: form.name.value,
+        phone: form.phone.value,
+        email: form.email.value,
+        message: form.message.value
+    };
+
+    try {
+        const res = await fetch("http://localhost:5000/api/contact", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData)
+        });
+
+        const data = await res.json();
+        if (data.success) {
+            statusMessage.textContent = "✅ Message sent successfully!";
+            statusMessage.style.color = "green";
+            form.reset();
+        } else {
+            statusMessage.textContent = "❌ Failed to send message!";
+            statusMessage.style.color = "red";
+        }
+    } catch (err) {
+        console.error(err);
+        statusMessage.textContent = "❌ Server error!";
+        statusMessage.style.color = "red";
+    }
+});
+</script>
+
+<!-- Floating Helpdesk Widget -->
+<div class="floating-contact" id="contactCircle">
+  <img src="images/contactus.jpg" 
+       alt="Helpdesk Icon" class="contact-logo">
+  <div class="contact-details">
+    <h4>Helpdesk</h4>
+    <p>📞 +123-456-7890</p>
+    <p>✉️ support@example.com</p>
+    <p>📍 Fresno, California</p>
+  </div>
+</div>
+
+<style>
+.floating-contact {
+  position: fixed;
+  bottom: 100px; /* keeps away from slider */
+  right: 20px;
+  width: 80px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+  transition: all 0.4s ease-in-out;
+  z-index: 9999;
+}
+
+.contact-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.contact-details {
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.97);
+  border-radius: 50%;
+  padding: 12px;
+  text-align: center;
+  opacity: 0;
+  transform: scale(0);
+  transition: all 0.4s ease-in-out;
+  font-size: 11px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.contact-details h4 {
+  margin: 0 0 4px;
+  font-size: 12px;
+  color: #007bff;
+}
+
+/* On hover, expand but stay circular */
+.floating-contact:hover {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+}
+
+.floating-contact:hover .contact-logo {
+  opacity: 0;
+}
+
+.floating-contact:hover .contact-details {
+  opacity: 1;
+  transform: scale(1);
+}
+</style>
+
+<!-- <script>
+  const authSection = document.getElementById("authSection");
+  const token = localStorage.getItem("accessToken");
+  const role = localStorage.getItem("role");
+
+  // If customer is logged in
+  if (token && role === "customer") {
+    const user = JSON.parse(localStorage.getItem("user")); // Store user info at login
+
+    authSection.innerHTML = `
+      <div class="profile-info">
+        👤 Hi, ${user?.name || "Customer"} 
+        <button id="logoutBtn" class="btn btn-danger">Logout</button>
+      </div>
+    `;
+
+    // Logout logic
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("role");
+      localStorage.removeItem("user");
+      window.location.href = "index.html";
+    });
+  }
+</script> -->
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const userData = localStorage.getItem("user");
+  const loginBtn = document.getElementById("loginBtn");
+  const signupBtn = document.getElementById("signupBtn");
+  const userMenu = document.getElementById("userMenu");
+  const userButton = document.getElementById("userButton");
+
+  if (userData) {
+    const user = JSON.parse(userData);
+
+    // Hide login/signup, show user menu
+    loginBtn.style.display = "none";
+    signupBtn.style.display = "none";
+    userMenu.style.display = "inline-block";
+
+    // Show first letter of name in circle
+    userButton.textContent = user.name.charAt(0).toUpperCase();
+
+    // Fill profile details in dropdown
+    document.getElementById("profileName").textContent = user.name;
+    document.getElementById("profileEmail").textContent = user.email;
+  }
+
+  // Toggle dropdown menu
+  userButton.addEventListener("click", () => {
+    const dropdown = document.getElementById("dropdown");
+    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+  });
+
+  // Logout
+  document.getElementById("logoutBtn").addEventListener("click", () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("role");
+    window.location.reload(); // Reload page to reset state
+  });
+});
+</script>
+
+
+
+</body>
+</html>

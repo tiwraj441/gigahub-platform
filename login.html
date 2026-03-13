@@ -1,0 +1,213 @@
+<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login / Signup - Gigahub</title>
+  <style>
+    /* Basic reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #f0f4f8;
+    }
+
+    .form-container {
+      background: #fff;
+      padding: 2rem 3rem;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      width: 350px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 1.5rem;
+      color: #007BFF;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      margin: 0.5rem 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    button {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      margin-top: 1rem;
+      border: none;
+      border-radius: 8px;
+      background: #007BFF;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    p {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+
+    a {
+      color: #007BFF;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h1>Login</h1>
+    <form action="http://localhost:5000/api/auth/login" method="POST">
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="password" name="password" placeholder="Password" required>
+      <button type="submit">Login</button>
+    </form>
+    <p>Don't have an account? <a href="signup.html">Signup</a></p>
+  </div>
+
+</body>
+</html-->
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login - Gigahub</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+body { height: 100vh; display: flex; justify-content: center; align-items: center; background: linear-gradient(135deg,#f0f4f8,#d9e2ec); }
+.form-container { background: #fff; padding: 2.5rem; border-radius: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); width: 380px; text-align: center; border:1px solid #e0e0e0; }
+h1 { margin-bottom:1.5rem; color:#007BFF; font-size:1.8rem; }
+input, select, button { width:100%; padding:0.9rem 1.2rem; margin:0.6rem 0; border-radius:10px; font-size:1rem; }
+input, select { border:1px solid #ddd; transition:border-color 0.3s; }
+input:focus, select:focus { outline:none; border-color:#007BFF; }
+button { border:none; background:#007BFF; color:#fff; cursor:pointer; transition:background 0.3s, transform 0.2s; }
+button:hover { background:#0056b3; transform:translateY(-1px); }
+p { margin-top:1rem; font-size:0.9rem; }
+a { color:#007BFF; text-decoration:none; }
+a:hover { text-decoration:underline; }
+#statusMessage { margin-top:1.2rem; padding:0.8rem; border-radius:8px; font-weight:bold; min-height:1.5em; display:none; transition:opacity 0.3s; }
+#statusMessage.show { display:block; opacity:1; }
+#statusMessage.loading { background:#e3f2fd; color:#1976d2; border:1px solid #bbdefb; }
+#statusMessage.success { background:#e8f5e8; color:#2e7d32; border:1px solid #c8e6c9; }
+#statusMessage.error { background:#ffebee; color:#c62828; border:1px solid #ffcdd2; }
+#resetSection { display:none; margin-top:1rem; }
+</style>
+</head>
+<body>
+
+<div class="form-container">
+<h1>Login to Gigahub</h1>
+
+<form id="loginForm">
+  <select name="role" id="role" required>
+    <option value="" disabled selected>Login as...</option>
+    <option value="client">Client</option>
+    <option value="customer">Customer</option>
+    <option value="admin">Admin</option>
+  </select>
+  <input type="email" name="email" placeholder="Email Address" required>
+  <input type="password" name="password" placeholder="Password" required minlength="6">
+  <button type="submit" id="submitBtn">Login</button>
+</form>
+
+<p><a href="#" id="forgotLink">Forgot Password?</a></p>
+
+<div id="resetSection">
+  <input type="email" id="resetEmail" placeholder="Enter your registered email">
+  <button id="sendResetLinkBtn">Send Reset Link</button>
+  <p id="resetStatus"></p>
+</div>
+
+<div id="statusMessage"></div>
+<p>Don't have an account? <a href="signup.html">Sign up here</a></p>
+<a href="index.html" class="back-home">← Back to Home</a>
+</div>
+
+<script>
+const form = document.getElementById("loginForm");
+const statusMessage = document.getElementById("statusMessage");
+const submitBtn = document.getElementById("submitBtn");
+const forgotLink = document.getElementById("forgotLink");
+const resetSection = document.getElementById("resetSection");
+const sendResetLinkBtn = document.getElementById("sendResetLinkBtn");
+const resetStatus = document.getElementById("resetStatus");
+
+function showMessage(text, type) {
+  statusMessage.textContent = text;
+  statusMessage.className = `show ${type}`;
+  statusMessage.style.display="block";
+}
+
+// Toggle reset password section
+forgotLink.addEventListener("click", (e)=> { e.preventDefault(); resetSection.style.display = resetSection.style.display==="none"?"block":"none"; });
+
+// Send reset link
+sendResetLinkBtn.addEventListener("click", async () => {
+  const email = document.getElementById("resetEmail").value.trim();
+  if(!email){ resetStatus.textContent="❌ Enter your email"; resetStatus.style.color="red"; return; }
+  resetStatus.textContent="⏳ Sending reset link..."; resetStatus.style.color="#1976d2";
+  try{
+    const res = await fetch("http://localhost:5000/api/auth/forgot-password", {
+      method:"POST", headers:{ "Content-Type":"application/json" }, body:JSON.stringify({email})
+    });
+    const data = await res.json();
+    if(res.ok && data.success){ resetStatus.textContent="✅ Reset link sent! Check email"; resetStatus.style.color="green"; }
+    else{ resetStatus.textContent=`❌ ${data.error||"Failed to send reset link"}`; resetStatus.style.color="red"; }
+  }catch(err){ resetStatus.textContent="❌ Network error"; resetStatus.style.color="red"; console.error(err); }
+});
+
+// Login
+form.addEventListener("submit", async (e)=>{
+  e.preventDefault();
+  const role = form.role.value, email=form.email.value.trim(), password=form.password.value;
+  if(!role || !email || !password){ showMessage("❌ Fill all fields","error"); return; }
+
+  submitBtn.disabled=true; submitBtn.textContent="Logging In..."; showMessage("⏳ Authenticating...","loading");
+
+  try{
+    const response = await fetch("http://localhost:5000/api/auth/login", {
+      method:"POST", headers:{ "Content-Type":"application/json" }, body:JSON.stringify({role,email,password})
+    });
+    const data = await response.json();
+    if(response.ok && data.success){
+      showMessage(`✅ Logged in as ${role}. Redirecting...`,"success");
+      localStorage.setItem("accessToken", data.accessToken||data.token);
+      localStorage.setItem("role", role);
+      localStorage.setItem("user", JSON.stringify(data.user||{}));
+      setTimeout(()=>{
+        if(role==="admin") window.location.href="admin-dashboard.html";
+        else if(role==="client") window.location.href="ticketing-dashboard.html";
+        else window.location.href="index.html";
+      },1500);
+    }else{ showMessage(`❌ ${data.error||"Login failed"}`,"error"); }
+  }catch(err){ showMessage("❌ Connection error","error"); console.error(err); }
+  finally{ submitBtn.disabled=false; submitBtn.textContent="Login"; }
+});
+</script>
+
+</body>
+</html>
+

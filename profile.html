@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile - Gigahub</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .profile-container {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      width: 350px;
+      text-align: center;
+    }
+    h2 {
+      color: #007BFF;
+      margin-bottom: 1rem;
+    }
+    .info {
+      margin: 10px 0;
+      font-size: 1rem;
+    }
+    button {
+      margin-top: 1.5rem;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      background: #007BFF;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="profile-container">
+    <h2>My Profile</h2>
+    <div class="info" id="userName">Name: </div>
+    <div class="info" id="userEmail">Email: </div>
+    <button id="logoutBtn">Logout</button>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const userData = localStorage.getItem("user");
+      if (!userData) {
+        window.location.href = "login.html"; // Redirect if not logged in
+        return;
+      }
+      
+      const user = JSON.parse(userData);
+      document.getElementById("userName").textContent = `Name: ${user.name}`;
+      document.getElementById("userEmail").textContent = `Email: ${user.email}`;
+
+      document.getElementById("logoutBtn").addEventListener("click", () => {
+        localStorage.removeItem("user");
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("role");
+        window.location.href = "index.html";
+      });
+    });
+  </script>
+</body>
+</html>
