@@ -11,6 +11,7 @@
   </script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <style>
     body { font-family: 'Arial', sans-serif; background-color: #f4f6f9; }
     .sidebar { height: 100vh; width: 220px; position: fixed; top: 0; left: 0; background-color: #343a40; padding-top: 20px; color: #fff; }
@@ -22,6 +23,9 @@
     .table-container { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1); }
     .logout-btn { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); width: 80%; }
     .error-msg { color: red; margin-top: 10px; }
+    .stat-icon { font-size: 2rem; opacity: 0.3; position: absolute; right: 20px; top: 15px; }
+    .chart-card { background: #fff; border-radius: 10px; padding: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); margin-bottom: 20px; }
+    .chart-card h5 { font-size: 0.95rem; font-weight: 600; color: #495057; margin-bottom: 15px; }
   </style>
 </head>
 <body>
@@ -38,13 +42,59 @@
   <div class="main-content">
     <div id="dashboard-section">
       <h3>Dashboard</h3>
+      
+      <!-- Stat Cards Row -->
       <div class="row">
         <div class="col-md-3">
-          <div class="card card-stats bg-primary text-white">
+          <div class="card card-stats text-white" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); position: relative; overflow: hidden;">
             <div class="card-body">
-              <h5>Total Enquiries</h5>
-              <h2 id="total-enquiries">0</h2>
+              <h6 style="opacity: 0.8; margin-bottom: 5px;">Total Enquiries</h6>
+              <h2 id="total-enquiries" style="font-weight: 700;">0</h2>
+              <i class="fas fa-envelope stat-icon"></i>
             </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card card-stats text-white" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); position: relative; overflow: hidden;">
+            <div class="card-body">
+              <h6 style="opacity: 0.8; margin-bottom: 5px;">Pending</h6>
+              <h2 id="stat-pending" style="font-weight: 700;">0</h2>
+              <i class="fas fa-clock stat-icon"></i>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card card-stats text-white" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); position: relative; overflow: hidden;">
+            <div class="card-body">
+              <h6 style="opacity: 0.8; margin-bottom: 5px;">In Progress</h6>
+              <h2 id="stat-in-progress" style="font-weight: 700;">0</h2>
+              <i class="fas fa-spinner stat-icon"></i>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card card-stats text-white" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); position: relative; overflow: hidden;">
+            <div class="card-body">
+              <h6 style="opacity: 0.8; margin-bottom: 5px;">Resolved</h6>
+              <h2 id="stat-resolved" style="font-weight: 700;">0</h2>
+              <i class="fas fa-check-circle stat-icon"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Row -->
+      <div class="row mt-4">
+        <div class="col-md-8">
+          <div class="chart-card">
+            <h5><i class="fas fa-chart-bar mr-2" style="color: #667eea;"></i>Enquiry Trends (Last 7 Days)</h5>
+            <canvas id="trendChart" height="120"></canvas>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="chart-card">
+            <h5><i class="fas fa-chart-pie mr-2" style="color: #f5576c;"></i>Status Distribution</h5>
+            <canvas id="statusChart" height="180"></canvas>
           </div>
         </div>
       </div>
@@ -117,6 +167,19 @@
 
         // Update total enquiries in dashboard
         document.getElementById("total-enquiries").innerText = data.enquiries.length;
+
+        // Update stat cards
+        const statusCounts = { pending: 0, under_review: 0, in_progress: 0, resolved: 0 };
+        data.enquiries.forEach(eq => {
+          const s = eq.status || (eq.response ? 'resolved' : 'pending');
+          if (statusCounts[s] !== undefined) statusCounts[s]++;
+        });
+        document.getElementById("stat-pending").innerText = statusCounts.pending + statusCounts.under_review;
+        document.getElementById("stat-in-progress").innerText = statusCounts.in_progress;
+        document.getElementById("stat-resolved").innerText = statusCounts.resolved;
+
+        // Render charts
+        renderAnalyticsCharts(data.enquiries, statusCounts);
 
         // Populate table
         const tbody = document.querySelector("#enquiries-table tbody");
@@ -324,6 +387,110 @@
     function logout() {
       localStorage.removeItem("adminToken");
       window.location.href = "login.html";
+    }
+
+    // ===== ANALYTICS CHARTS =====
+    let trendChartInstance = null;
+    let statusChartInstance = null;
+
+    function renderAnalyticsCharts(enquiries, statusCounts) {
+      // --- 7-Day Trend Bar Chart ---
+      const today = new Date();
+      const labels = [];
+      const dailyCounts = [];
+
+      for (let i = 6; i >= 0; i--) {
+        const d = new Date(today);
+        d.setDate(d.getDate() - i);
+        const dateStr = d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short' });
+        labels.push(dateStr);
+
+        const dayStart = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+        const dayEnd = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1);
+
+        const count = enquiries.filter(e => {
+          const created = new Date(e.createdAt);
+          return created >= dayStart && created < dayEnd;
+        }).length;
+
+        dailyCounts.push(count);
+      }
+
+      const trendCtx = document.getElementById('trendChart');
+      if (trendCtx) {
+        if (trendChartInstance) trendChartInstance.destroy();
+        trendChartInstance = new Chart(trendCtx.getContext('2d'), {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Enquiries',
+              data: dailyCounts,
+              backgroundColor: 'rgba(102, 126, 234, 0.7)',
+              borderColor: '#667eea',
+              borderWidth: 2,
+              borderRadius: 6,
+              borderSkipped: false,
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { display: false },
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: { stepSize: 1, font: { size: 12 } },
+                grid: { color: 'rgba(0,0,0,0.05)' }
+              },
+              x: {
+                ticks: { font: { size: 11 } },
+                grid: { display: false }
+              }
+            }
+          }
+        });
+      }
+
+      // --- Status Doughnut Chart ---
+      const statusCtx = document.getElementById('statusChart');
+      if (statusCtx) {
+        if (statusChartInstance) statusChartInstance.destroy();
+        statusChartInstance = new Chart(statusCtx.getContext('2d'), {
+          type: 'doughnut',
+          data: {
+            labels: ['Pending', 'Under Review', 'In Progress', 'Resolved'],
+            datasets: [{
+              data: [
+                statusCounts.pending,
+                statusCounts.under_review,
+                statusCounts.in_progress,
+                statusCounts.resolved
+              ],
+              backgroundColor: [
+                '#f5576c',
+                '#4facfe',
+                '#667eea',
+                '#43e97b'
+              ],
+              borderWidth: 2,
+              borderColor: '#fff',
+              hoverOffset: 8,
+            }]
+          },
+          options: {
+            responsive: true,
+            cutout: '60%',
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: { padding: 15, usePointStyle: true, pointStyleWidth: 10, font: { size: 12 } }
+              }
+            }
+          }
+        });
+      }
     }
 
     // Load on page load

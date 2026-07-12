@@ -43,7 +43,7 @@
 
 
 
-            <div class="auth-buttons" style="margin-left: 1rem;">
+            <div class="auth-buttons" style="margin-left: 1rem; display: flex; align-items: center;">
   <!-- Login & Signup (shown if not logged in) -->
   <a href="login.html" class="btn btn-primary" id="loginBtn">Login</a>
   <a href="signup.html" class="btn btn-outline-primary" id="signupBtn">Signup</a>
@@ -92,11 +92,26 @@
       </li>
     </ul>
   </div>
+
+  <!-- Dark Mode Toggle -->
+  <button class="dark-mode-toggle" id="darkModeToggle" title="Toggle Dark Mode" aria-label="Toggle Dark Mode">
+    <i class="fas fa-moon" id="darkModeIcon"></i>
+  </button>
 </div>
 
             </ul>
         </nav>
     </header>
+
+<script>
+// Dark Mode initialization (must run early)
+(function() {
+  const savedTheme = localStorage.getItem('gigahub-theme');
+  if (savedTheme === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }
+})();
+</script>
 
   <section id="home" class="home">
     <canvas id="particle-canvas"></canvas>
@@ -1449,6 +1464,39 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener('scroll', function() {
     header.classList.toggle('scrolled', window.scrollY > 60);
   }, { passive: true });
+})();
+</script>
+
+<script>
+/* ============================================================
+   5. DARK MODE TOGGLE
+   ============================================================ */
+(function() {
+  const toggleBtn = document.getElementById('darkModeToggle');
+  const icon = document.getElementById('darkModeIcon');
+  if (!toggleBtn || !icon) return;
+
+  // Set correct icon on load
+  const currentTheme = document.documentElement.getAttribute('data-theme');
+  if (currentTheme === 'dark') {
+    icon.classList.remove('fa-moon');
+    icon.classList.add('fa-sun');
+  }
+
+  toggleBtn.addEventListener('click', function() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    if (isDark) {
+      document.documentElement.removeAttribute('data-theme');
+      localStorage.setItem('gigahub-theme', 'light');
+      icon.classList.remove('fa-sun');
+      icon.classList.add('fa-moon');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      localStorage.setItem('gigahub-theme', 'dark');
+      icon.classList.remove('fa-moon');
+      icon.classList.add('fa-sun');
+    }
+  });
 })();
 </script>
 
