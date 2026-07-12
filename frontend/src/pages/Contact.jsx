@@ -50,7 +50,7 @@ export default function Contact() {
   );
 }**/
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { submitLead } from "../api/apiClient";
 
 export default function Contact() {

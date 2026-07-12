@@ -1,4 +1,4 @@
-<!--<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -7,60 +7,21 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      background-color: #f4f6f9;
-    }
-    .sidebar {
-      height: 100vh;
-      width: 220px;
-      position: fixed;
-      top: 0;
-      left: 0;
-      background-color: #343a40;
-      padding-top: 20px;
-      color: #fff;
-    }
-    .sidebar a {
-      color: #c2c7d0;
-      display: block;
-      padding: 15px;
-      text-decoration: none;
-    }
-    .sidebar a:hover {
-      background-color: #495057;
-      color: #fff;
-    }
-    .sidebar h2 {
-      color: #fff;
-      text-align: center;
-      margin-bottom: 30px;
-    }
-    .main-content {
-      margin-left: 220px;
-      padding: 20px;
-    }
-    .card-stats {
-      margin-bottom: 20px;
-    }
-    .table-container {
-      background: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
-    }
-    .logout-btn {
-      position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 80%;
-    }
+    body { font-family: 'Arial', sans-serif; background-color: #f4f6f9; }
+    .sidebar { height: 100vh; width: 220px; position: fixed; top: 0; left: 0; background-color: #343a40; padding-top: 20px; color: #fff; }
+    .sidebar a { color: #c2c7d0; display: block; padding: 15px; text-decoration: none; }
+    .sidebar a:hover { background-color: #495057; color: #fff; }
+    .sidebar h2 { color: #fff; text-align: center; margin-bottom: 30px; }
+    .main-content { margin-left: 220px; padding: 20px; }
+    .card-stats { margin-bottom: 20px; }
+    .table-container { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1); }
+    .logout-btn { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); width: 80%; }
+    .error-msg { color: red; margin-top: 10px; }
   </style>
 </head>
 <body>
 
-   Sidebar 
+  <!-- Sidebar -->
   <div class="sidebar">
     <h2>Admin Panel</h2>
     <a href="#" id="dashboard-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
@@ -68,7 +29,7 @@
     <button class="btn btn-danger logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
   </div>
 
-   Main Content 
+  <!-- Main Content -->
   <div class="main-content">
     <div id="dashboard-section">
       <h3>Dashboard</h3>
@@ -81,34 +42,10 @@
             </div>
           </div>
         </div>
-        <div class="col-md-3">
-          <div class="card card-stats bg-success text-white">
-            <div class="card-body">
-              <h5>Happy Clients</h5>
-              <h2>480</h2>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="card card-stats bg-warning text-white">
-            <div class="card-body">
-              <h5>Projects Completed</h5>
-              <h2>720</h2>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="card card-stats bg-info text-white">
-            <div class="card-body">
-              <h5>Awards Received</h5>
-              <h2>120</h2>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
 
-    Enquiries Section 
+    <!-- Enquiries Section -->
     <div id="enquiries-section" style="display:none;">
       <h3>Customer Enquiries</h3>
       <div class="table-container mt-3">
@@ -120,13 +57,15 @@
               <th>Phone</th>
               <th>Message</th>
               <th>Date</th>
+              <th>Status</th>
+              <th>Response / Reply</th>
             </tr>
           </thead>
           <tbody></tbody>
         </table>
+        <p id="fetch-error" class="error-msg" style="display:none;"></p>
       </div>
     </div>
-
   </div>
 
   <script>
@@ -136,221 +75,226 @@
     const enquiriesSection = document.getElementById('enquiries-section');
 
     // Toggle sections
-    dashboardLink.addEventListener('click', () => {
+    dashboardLink.addEventListener('click', (e) => {
+      e.preventDefault();
       dashboardSection.style.display = 'block';
       enquiriesSection.style.display = 'none';
     });
-    enquiriesLink.addEventListener('click', () => {
+    enquiriesLink.addEventListener('click', (e) => {
+      e.preventDefault();
       dashboardSection.style.display = 'none';
       enquiriesSection.style.display = 'block';
       fetchEnquiries();
     });
 
-    // Fetch Enquiries
     async function fetchEnquiries() {
       const token = localStorage.getItem("adminToken");
       if (!token) return window.location.href = "admin-login.html";
 
-      const res = await fetch("http://localhost:5000/api/admin/enquiries", {
-        headers: { "Authorization": "Bearer "+token }
-      });
-      const data = await res.json();
-      document.getElementById("total-enquiries").innerText = data.length;
+      const errorEl = document.getElementById("fetch-error");
+      errorEl.style.display = "none";
 
-      const tbody = document.querySelector("#enquiries-table tbody");
-      tbody.innerHTML = "";
-      data.forEach(e => {
-        tbody.innerHTML += `<tr>
-          <td>${e.name}</td>
-          <td>${e.email}</td>
-          <td>${e.phone}</td>
-          <td>${e.message}</td>
-          <td>${new Date(e.createdAt).toLocaleString()}</td>
-        </tr>`;
-      });
+      try {
+        const res = await fetch("http://localhost:5000/api/admin/enquiries", {
+          headers: { "Authorization": "Bearer " + token }  // Space after Bearer
+        });
+
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+        }
+
+        const data = await res.json();
+
+        if (!data.success) {
+          throw new Error(data.error || "Unknown error");
+        }
+
+        // Update total enquiries in dashboard
+        document.getElementById("total-enquiries").innerText = data.enquiries.length;
+
+        // Populate table
+        const tbody = document.querySelector("#enquiries-table tbody");
+        tbody.innerHTML = "";
+        if (data.enquiries.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="7" class="text-center">No enquiries yet.</td></tr>';
+        } else {
+          data.enquiries.forEach(e => {
+            const escapedResponse = e.response ? e.response.replace(/"/g, '&quot;').replace(/'/g, '&#39;') : '';
+            
+            // Status dropdown options HTML
+            const statusOptions = ['pending', 'under_review', 'in_progress', 'resolved'];
+            const statusLabels = {
+              'pending': 'Pending',
+              'under_review': 'Under Review',
+              'in_progress': 'In Progress',
+              'resolved': 'Resolved'
+            };
+            const currentStatus = e.status || (e.response ? 'resolved' : 'pending');
+            
+            let statusSelectHTML = `<select class="form-control form-control-sm" onchange="updateStatus('${e._id}', this.value)" style="width:130px;">`;
+            statusOptions.forEach(opt => {
+              const selected = opt === currentStatus ? 'selected' : '';
+              statusSelectHTML += `<option value="${opt}" ${selected}>${statusLabels[opt]}</option>`;
+            });
+            statusSelectHTML += `</select>`;
+
+            // Action / Response HTML
+            let actionHTML = '';
+            if (e.response) {
+              actionHTML = `
+                <div id="display-container-${e._id}" class="d-flex align-items-center justify-content-between">
+                  <span class="text-success">${e.response}</span>
+                  <button class="btn btn-sm btn-outline-primary ml-2" data-resp="${escapedResponse}" onclick="startInlineEdit('${e._id}', this.getAttribute('data-resp'))">
+                    <i class="fas fa-edit"></i> Edit
+                  </button>
+                </div>
+                <div id="edit-container-${e._id}" class="input-group" style="display: none;">
+                  <input type="text" id="resp-${e._id}" class="form-control form-control-sm" placeholder="Type reply...">
+                  <div class="input-group-append">
+                    <button class="btn btn-sm btn-outline-info" onclick="generateAISuggestion('${e._id}', this)" title="Generate AI Suggestion">✨ AI</button>
+                    <button class="btn btn-sm btn-primary" onclick="submitResponse('${e._id}')">Save</button>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="cancelInlineEdit('${e._id}')">Cancel</button>
+                  </div>
+                </div>
+              `;
+            } else {
+              actionHTML = `
+                <div id="edit-container-${e._id}" class="input-group">
+                  <input type="text" id="resp-${e._id}" class="form-control form-control-sm" placeholder="Type reply...">
+                  <div class="input-group-append">
+                    <button class="btn btn-sm btn-outline-info" onclick="generateAISuggestion('${e._id}', this)" title="Generate AI Suggestion">✨ AI</button>
+                    <button class="btn btn-sm btn-primary" onclick="submitResponse('${e._id}')">Save</button>
+                  </div>
+                </div>
+              `;
+            }
+            
+            tbody.innerHTML += `<tr>
+              <td>${e.name || 'N/A'}</td>
+              <td>${e.email || 'N/A'}</td>
+              <td>${e.phone || 'N/A'}</td>
+              <td>${e.message || 'N/A'}</td>
+              <td>${new Date(e.createdAt).toLocaleString()}</td>
+              <td>${statusSelectHTML}</td>
+              <td>${actionHTML}</td>
+            </tr>`;
+          });
+        }
+      } catch (err) {
+        console.error("Error fetching enquiries:", err);
+        errorEl.textContent = `Error: ${err.message}`;
+        errorEl.style.display = "block";
+      }
     }
+
+    window.submitResponse = async function(id) {
+      const el = document.getElementById('resp-' + id);
+      const responseText = el ? el.value : "";
+      if (!responseText.trim()) return alert("Please type a response");
+      
+      const token = localStorage.getItem("adminToken");
+      try {
+        const res = await fetch(`http://localhost:5000/api/admin/enquiries/${id}/respond`, {
+          method: 'PUT',
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token 
+          },
+          body: JSON.stringify({ response: responseText })
+        });
+        const data = await res.json();
+        if (data.success) {
+          fetchEnquiries(); // Refresh the table automatically
+        } else {
+          alert("Error saving response: " + data.error);
+        }
+      } catch(err) {
+        console.error(err);
+        alert("Failed to save response");
+      }
+    };
+
+    window.generateAISuggestion = async function(id, btn) {
+      const originalText = btn ? btn.innerHTML : "✨ AI";
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
+      }
+      
+      const token = localStorage.getItem("adminToken");
+      try {
+        const res = await fetch(`http://localhost:5000/api/admin/enquiries/${id}/suggest-reply`, {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer ' + token
+          }
+        });
+        
+        const data = await res.json();
+        if (data.success) {
+          const input = document.getElementById('resp-' + id);
+          if (input) {
+            input.value = data.suggestion;
+          }
+        } else {
+          alert("AI Error: " + (data.error || "Failed to generate reply"));
+        }
+      } catch(err) {
+        console.error(err);
+        alert("Failed to connect to AI server");
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = originalText;
+        }
+      }
+    };
+
+    window.updateStatus = async function(id, newStatus) {
+      const token = localStorage.getItem("adminToken");
+      try {
+        const res = await fetch(`http://localhost:5000/api/admin/enquiries/${id}/respond`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({ status: newStatus })
+        });
+        const data = await res.json();
+        if (data.success) {
+          fetchEnquiries(); // Refresh the table
+        } else {
+          alert("Error updating status: " + data.error);
+        }
+      } catch(err) {
+        console.error(err);
+        alert("Failed to update status");
+      }
+    };
+
+    window.startInlineEdit = function(id, currentResp) {
+      document.getElementById(`display-container-${id}`).style.display = 'none';
+      document.getElementById(`edit-container-${id}`).style.display = 'flex';
+      const input = document.getElementById(`resp-${id}`);
+      if (input) {
+        input.value = currentResp;
+        input.focus();
+      }
+    };
+
+    window.cancelInlineEdit = function(id) {
+      document.getElementById(`display-container-${id}`).style.display = 'flex';
+      document.getElementById(`edit-container-${id}`).style.display = 'none';
+    };
 
     function logout() {
       localStorage.removeItem("adminToken");
-      window.location.href = "admin-login.html";
+      window.location.href = "login.html";
     }
 
-    // Load dashboard stats on page load
-    fetchEnquiries();
+    // Load on page load
+    window.addEventListener('load', fetchEnquiries);
   </script>
-
 </body>
-</html>-->
-
-
-
-   <!DOCTYPE html>
-   <html lang="en">
-   <head>
-     <meta charset="UTF-8">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>Admin Dashboard</title>
-     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-     <style>
-       body { font-family: 'Arial', sans-serif; background-color: #f4f6f9; }
-       .sidebar { height: 100vh; width: 220px; position: fixed; top: 0; left: 0; background-color: #343a40; padding-top: 20px; color: #fff; }
-       .sidebar a { color: #c2c7d0; display: block; padding: 15px; text-decoration: none; }
-       .sidebar a:hover { background-color: #495057; color: #fff; }
-       .sidebar h2 { color: #fff; text-align: center; margin-bottom: 30px; }
-       .main-content { margin-left: 220px; padding: 20px; }
-       .card-stats { margin-bottom: 20px; }
-       .table-container { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1); }
-       .logout-btn { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); width: 80%; }
-       .error-msg { color: red; margin-top: 10px; }
-     </style>
-   </head>
-   <body>
-
-     <!-- Sidebar -->
-     <div class="sidebar">
-       <h2>Admin Panel</h2>
-       <a href="#" id="dashboard-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-       <a href="#" id="enquiries-link"><i class="fas fa-envelope"></i> Enquiries</a>
-       <button class="btn btn-danger logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
-     </div>
-
-     <!-- Main Content -->
-     <div class="main-content">
-       <div id="dashboard-section">
-         <h3>Dashboard</h3>
-         <div class="row">
-           <div class="col-md-3">
-             <div class="card card-stats bg-primary text-white">
-               <div class="card-body">
-                 <h5>Total Enquiries</h5>
-                 <h2 id="total-enquiries">0</h2>
-               </div>
-             </div>
-           </div>
-           <!--div class="col-md-3">
-             <div class="card card-stats bg-success text-white">
-               <div class="card-body">
-                 <h5>Happy Clients</h5>
-                 <h2>480</h2>
-               </div>
-             </div>
-           </div>
-           <div class="col-md-3">
-             <div class="card card-stats bg-warning text-white">
-               <div class="card-body">
-                 <h5>Projects Completed</h5>
-                 <h2>720</h2>
-               </div>
-             </div>
-           </div>
-           <div class="col-md-3">
-             <div class="card card-stats bg-info text-white">
-               <div class="card-body">
-                 <h5>Awards Received</h5>
-                 <h2>120</h2>
-               </div>
-             </div>
-           </div-->
-         </div>
-       </div>
-
-       <!-- Enquiries Section -->
-       <div id="enquiries-section" style="display:none;">
-         <h3>Customer Enquiries</h3>
-         <div class="table-container mt-3">
-           <table class="table table-striped" id="enquiries-table">
-             <thead class="thead-dark">
-               <tr>
-                 <th>Name</th>
-                 <th>Email</th>
-                 <th>Phone</th>
-                 <th>Message</th>
-                 <th>Date</th>
-               </tr>
-             </thead>
-             <tbody></tbody>
-           </table>
-           <p id="fetch-error" class="error-msg" style="display:none;"></p>
-         </div>
-       </div>
-     </div>
-
-     <script>
-       const dashboardLink = document.getElementById('dashboard-link');
-       const enquiriesLink = document.getElementById('enquiries-link');
-       const dashboardSection = document.getElementById('dashboard-section');
-       const enquiriesSection = document.getElementById('enquiries-section');
-
-       // Toggle sections
-       dashboardLink.addEventListener('click', (e) => {
-         e.preventDefault();
-         dashboardSection.style.display = 'block';
-         enquiriesSection.style.display = 'none';
-       });
-       enquiriesLink.addEventListener('click', (e) => {
-         e.preventDefault();
-         dashboardSection.style.display = 'none';
-         enquiriesSection.style.display = 'block';
-         fetchEnquiries();
-       });
-
-       async function fetchEnquiries() {
-         const token = localStorage.getItem("adminToken");
-         if (!token) return window.location.href = "admin-login.html";
-
-         const errorEl = document.getElementById("fetch-error");
-         errorEl.style.display = "none";
-
-         try {
-           const res = await fetch("http://localhost:5000/api/admin/enquiries", {
-             headers: { "Authorization": "Bearer " + token }  // Space after Bearer
-           });
-
-           if (!res.ok) {
-             throw new Error(`HTTP ${res.status}: ${res.statusText}`);
-           }
-
-           const data = await res.json();
-
-           if (!data.success) {
-             throw new Error(data.error || "Unknown error");
-           }
-
-           // Update total enquiries in dashboard
-           document.getElementById("total-enquiries").innerText = data.enquiries.length;
-
-           // Populate table
-           const tbody = document.querySelector("#enquiries-table tbody");
-           tbody.innerHTML = "";
-           if (data.enquiries.length === 0) {
-             tbody.innerHTML = '<tr><td colspan="5" class="text-center">No enquiries yet.</td></tr>';
-           } else {
-             data.enquiries.forEach(e => {
-               tbody.innerHTML += `<tr>
-                 <td>${e.name || 'N/A'}</td>
-                 <td>${e.email || 'N/A'}</td>
-                 <td>${e.phone || 'N/A'}</td>
-                 <td>${e.message || 'N/A'}</td>
-                 <td>${new Date(e.createdAt).toLocaleString()}</td>
-               </tr>`;
-             });
-           }
-         } catch (err) {
-           console.error("Error fetching enquiries:", err);
-           errorEl.textContent = `Error: ${err.message}`;
-           errorEl.style.display = "block";
-         }
-       }
-
-       function logout() {
-         localStorage.removeItem("adminToken");
-         window.location.href = "admin-login.html";
-       }
-
-       // Load on page load
-       window.addEventListener('load', fetchEnquiries);
-     </script>
-   </body>
-   </html>
-   
+</html>

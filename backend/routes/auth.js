@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import validator from "validator";
 import User from "../models/User.js";
 import nodemailer from "nodemailer";
+import requireAuth from "../middleware/auth.js";
 
 const router = express.Router();
 
@@ -43,7 +44,8 @@ function signRefreshToken(user) {
 // ---------------- REGISTER ----------------
 router.post("/register", async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    let { name, email, password } = req.body;
+    email = email ? email.toLowerCase().trim() : "";
     if (!name || !email || !password)
       return res.status(400).json({ error: "Name, email and password are required." });
 
@@ -92,7 +94,8 @@ router.post("/register", async (req, res) => {
 // ---------------- LOGIN ----------------
 router.post("/login", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    let { email, password } = req.body;
+    email = email ? email.toLowerCase().trim() : "";
     if (!email || !password)
       return res.status(400).json({ error: "Email and password are required." });
 
@@ -142,7 +145,8 @@ router.post("/login", async (req, res) => {
 
 // ---------------- FORGOT PASSWORD ----------------
 router.post("/forgot-password", async (req, res) => {
-  const { email } = req.body;
+  let { email } = req.body;
+  email = email ? email.toLowerCase().trim() : "";
   if (!email) return res.status(400).json({ error: "Email is required" });
 
   try {
@@ -296,6 +300,54 @@ router.post("/logout", async (req, res) => {
     });
 
     res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// ---------------- UPDATE PROFILE ----------------
+router.put("/profile", requireAuth, async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+    const user = await User.findById(req.user._id);
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    if (email && email.toLowerCase().trim() !== user.email) {
+      const emailLower = email.toLowerCase().trim();
+      if (!validator.isEmail(emailLower)) {
+        return res.status(400).json({ error: "Invalid email address." });
+      }
+      const emailExists = await User.findOne({ email: emailLower });
+      if (emailExists) {
+        return res.status(400).json({ error: "Email already in use." });
+      }
+      user.email = emailLower;
+    }
+
+    if (name) {
+      user.name = name.trim();
+    }
+
+    if (password) {
+      if (password.length < 6) {
+        return res.status(400).json({ error: "Password must be at least 6 characters." });
+      }
+      const salt = await bcrypt.genSalt(10);
+      user.passwordHash = await bcrypt.hash(password, salt);
+    }
+
+    await user.save();
+
+    res.json({
+      success: true,
+      message: "Profile updated successfully.",
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email
+      }
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Internal server error" });

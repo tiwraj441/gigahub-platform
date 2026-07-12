@@ -5,6 +5,13 @@ const enquirySchema = new mongoose.Schema({
   phone: String,
   email: String,
   message: String,
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: false },
+  response: { type: String, default: "" },
+  status: {
+    type: String,
+    enum: ["pending", "under_review", "in_progress", "resolved"],
+    default: "pending"
+  },
   createdAt: { type: Date, default: Date.now }
 });
 

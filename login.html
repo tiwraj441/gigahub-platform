@@ -188,21 +188,35 @@ form.addEventListener("submit", async (e)=>{
   submitBtn.disabled=true; submitBtn.textContent="Logging In..."; showMessage("⏳ Authenticating...","loading");
 
   try{
-    const response = await fetch("http://localhost:5000/api/auth/login", {
-      method:"POST", headers:{ "Content-Type":"application/json" }, body:JSON.stringify({role,email,password})
+    let url = "http://localhost:5000/api/auth/login";
+    let payload = { role, email, password };
+    
+    if (role === "admin") {
+      url = "http://localhost:5000/api/admin/login";
+      payload = { email, password };
+    }
+
+    const response = await fetch(url, {
+      method:"POST", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(payload)
     });
     const data = await response.json();
     if(response.ok && data.success){
       showMessage(`✅ Logged in as ${role}. Redirecting...`,"success");
-      localStorage.setItem("accessToken", data.accessToken||data.token);
-      localStorage.setItem("role", role);
-      localStorage.setItem("user", JSON.stringify(data.user||{}));
-      setTimeout(()=>{
-        if(role==="admin") window.location.href="admin-dashboard.html";
-        else if(role==="client") window.location.href="ticketing-dashboard.html";
-        else window.location.href="index.html";
-      },1500);
-    }else{ showMessage(`❌ ${data.error||"Login failed"}`,"error"); }
+      if (role === "admin") {
+        localStorage.setItem("adminToken", data.token || data.accessToken);
+        localStorage.setItem("role", "admin");
+        setTimeout(()=>{
+          window.location.href="admin.html";
+        },1500);
+      } else {
+        localStorage.setItem("accessToken", data.accessToken||data.token);
+        localStorage.setItem("role", role);
+        localStorage.setItem("user", JSON.stringify(data.user||{}));
+        setTimeout(()=>{
+          window.location.href="index.html";
+        },1500);
+      }
+    }else{ showMessage(`❌ ${data.error||data.message||"Login failed"}`,"error"); }
   }catch(err){ showMessage("❌ Connection error","error"); console.error(err); }
   finally{ submitBtn.disabled=false; submitBtn.textContent="Login"; }
 });

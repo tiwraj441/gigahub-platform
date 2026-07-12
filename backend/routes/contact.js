@@ -1,7 +1,9 @@
 // routes/contact.js
 import express from "express";
 import nodemailer from "nodemailer";
+import jwt from "jsonwebtoken";
 import Enquiry from "../models/Enquiry.js";
+import User from "../models/User.js";
 
 const router = express.Router();
 
@@ -14,8 +16,35 @@ router.post("/", async (req, res) => {
       return res.status(400).json({ error: "All fields are required." });
     }
 
+    // Determine the userId
+    let userId = null;
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+      const token = authHeader.split(" ")[1];
+      try {
+        const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+        userId = decoded.sub;
+      } catch (err) {
+        // Ignore invalid token
+      }
+    }
+
+    // Fallback to email lookup if token wasn't provided or valid
+    if (!userId) {
+      const user = await User.findOne({ email: email.toLowerCase().trim() });
+      if (user) {
+        userId = user._id;
+      }
+    }
+
     // 1️⃣ Save enquiry to MongoDB
-    const enquiry = await Enquiry.create({ name, phone, email, message });
+    const enquiry = await Enquiry.create({ 
+      name, 
+      phone, 
+      email: email.toLowerCase().trim(), 
+      message, 
+      userId 
+    });
 
     // 2️⃣ Send email notification
     const transporter = nodemailer.createTransport({
@@ -34,7 +63,7 @@ router.post("/", async (req, res) => {
     });
 
     // 3️⃣ Respond with success
-    res.json({ success: true, message: "Message sent successfully!" });
+    res.json({ success: true, message: "Message sent successfully!", enquiry });
 
   } catch (err) {
     console.error("Contact POST error:", err);

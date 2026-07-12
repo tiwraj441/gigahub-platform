@@ -111,7 +111,7 @@
     body { height: 100vh; display: flex; justify-content: center; align-items: center; background: #f0f4f8; }
     .form-container { background: #fff; padding: 2rem 3rem; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 400px; text-align: center; }
     h1 { margin-bottom: 1.5rem; color: #007BFF; }
-    input { width: 100%; padding: 0.8rem 1rem; margin: 0.5rem 0; border-radius: 8px; border: 1px solid #ccc; font-size: 1rem; }
+    input, select { width: 100%; padding: 0.8rem 1rem; margin: 0.5rem 0; border-radius: 8px; border: 1px solid #ccc; font-size: 1rem; }
     button { width: 100%; padding: 0.8rem 1rem; margin-top: 1rem; border: none; border-radius: 8px; background: #007BFF; color: #fff; font-size: 1rem; cursor: pointer; transition: background 0.3s; }
     button:hover { background: #0056b3; }
     p { margin-top: 1rem; font-size: 0.9rem; }
@@ -127,6 +127,12 @@
   <div class="form-container">
     <h1>Signup</h1>
     <form id="signupForm">
+      <select name="role" id="role" required>
+        <option value="" disabled selected>Signup as...</option>
+        <option value="client">Client</option>
+        <option value="customer">Customer</option>
+        <option value="admin">Admin</option>
+      </select>
       <input type="text" name="name" placeholder="Full Name" required>
       <input type="email" name="email" placeholder="Email" required>
       <input type="password" name="password" placeholder="Password" required>
@@ -147,16 +153,24 @@
       statusMessage.textContent = "⏳ Signing up...";
       statusMessage.style.color = "blue";
 
+      const role = form.role.value;
+
       // Build JSON payload
       const formData = {
         name: form.name.value.trim(),
         email: form.email.value.trim(),
-        password: form.password.value
+        password: form.password.value,
+        role: role
       };
 
       try {
+        let url = "http://localhost:5000/api/auth/register";
+        if (role === "admin") {
+          url = "http://localhost:5000/api/admin/register";
+        }
+
         // Send proper JSON to backend
-        const response = await fetch("http://localhost:5000/api/auth/register", {
+        const response = await fetch(url, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           credentials: "include", // important if backend sets cookies

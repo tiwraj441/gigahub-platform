@@ -3,74 +3,849 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Profile - Gigahub</title>
+  <title>User Settings & Enquiries - Gigahub</title>
+  <!-- Modern Outfit Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- FontAwesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
   <style>
+    :root {
+      --primary: #007BFF;
+      --primary-hover: #0056b3;
+      --primary-light: #e6f2ff;
+      --bg-dark: #0f172a;
+      --bg-light: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+      --radius: 12px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Outfit', sans-serif;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background: #f5f7fa;
+      background-color: var(--bg-light);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header styling */
+    .header-bar {
+      padding: 2rem;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .header-bar h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .header-bar h1 i {
+      color: var(--primary);
+    }
+
+    .actions-top {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .btn {
+      padding: 0.625rem 1.25rem;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: #fff;
+    }
+
+    .btn-danger {
+      background: #ef4444;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: #dc2626;
+      transform: translateY(-1px);
+    }
+
+    /* Tabs styling */
+    .tab-bar {
+      display: flex;
+      background: #f1f5f9;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 1.25rem 1rem;
+      background: transparent;
+      border: none;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      gap: 0.5rem;
+      transition: var(--transition);
+      border-bottom: 3px solid transparent;
     }
-    .profile-container {
+
+    .tab-btn:hover {
+      color: var(--text-main);
+      background: rgba(0,0,0,0.02);
+    }
+
+    .tab-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+      background: var(--card-bg);
+    }
+
+    /* Content Area */
+    .content-area {
+      padding: 2.5rem;
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.4s ease-out;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Profile Form styling */
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-main);
+      margin-bottom: 0.5rem;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      background: var(--bg-light);
+      color: var(--text-main);
+      transition: var(--transition);
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
       background: #fff;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-      width: 350px;
-      text-align: center;
+      box-shadow: 0 0 0 4px var(--primary-light);
     }
-    h2 {
-      color: #007BFF;
+
+    .form-info-text {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+    /* Enquiry List styling */
+    .enquiry-card {
+      background: var(--bg-light);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .enquiry-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      border-color: #cbd5e1;
+    }
+
+    .enquiry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 1rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
     }
-    .info {
-      margin: 10px 0;
-      font-size: 1rem;
+
+    .enquiry-date {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 500;
     }
-    button {
-      margin-top: 1.5rem;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 6px;
-      background: #007BFF;
+
+    .enquiry-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .badge-pending {
+      background: #fef3c7;
+      color: #d97706;
+    }
+
+    .badge-under-review {
+      background: #e0f2fe;
+      color: #0369a1;
+    }
+
+    .badge-in-progress {
+      background: #e0e7ff;
+      color: #4338ca;
+    }
+
+    .badge-replied {
+      background: #d1fae5;
+      color: #059669;
+    }
+
+    /* Stepper Timeline styling */
+    .stepper-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 1.5rem 0;
+      position: relative;
+      background: #fff;
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+
+    .stepper-line {
+      position: absolute;
+      top: 50%;
+      left: 10%;
+      right: 10%;
+      height: 4px;
+      background: var(--border-color);
+      transform: translateY(-50%);
+      z-index: 1;
+    }
+
+    .stepper-line-fill {
+      height: 100%;
+      background: var(--success);
+      width: 0%;
+      transition: width 0.5s ease;
+    }
+
+    .step-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+      flex: 1;
+    }
+
+    .step-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #fff;
+      border: 3px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      transition: var(--transition);
+    }
+
+    .step-node.completed .step-circle {
+      border-color: var(--success);
+      background: var(--success);
       color: #fff;
-      font-size: 1rem;
-      cursor: pointer;
     }
-    button:hover {
-      background: #0056b3;
+
+    .step-node.active .step-circle {
+      border-color: var(--primary);
+      color: var(--primary);
+      box-shadow: 0 0 0 4px var(--primary-light);
+    }
+
+    .step-label {
+      margin-top: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-align: center;
+      transition: var(--transition);
+    }
+
+    .step-node.completed .step-label {
+      color: var(--success);
+    }
+
+    .step-node.active .step-label {
+      color: var(--primary);
+    }
+
+    .enquiry-message {
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: var(--text-main);
+      background: #fff;
+      padding: 1rem;
+      border-radius: 8px;
+      border-left: 4px solid #cbd5e1;
+      margin-bottom: 1.25rem;
+    }
+
+    .response-section {
+      background: var(--primary-light);
+      border-radius: 8px;
+      padding: 1.25rem;
+      border-left: 4px solid var(--primary);
+    }
+
+    .response-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--primary-hover);
+      margin-bottom: 0.5rem;
+    }
+
+    .response-text {
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: #0f172a;
+    }
+
+    .no-enquiries {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--text-muted);
+    }
+
+    .no-enquiries i {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: #cbd5e1;
+    }
+
+    .no-enquiries p {
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+
+    /* Alerts */
+    .alert {
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+      display: none;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .alert-success {
+      background: #d1fae5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+    }
+
+    .alert-error {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+    }
+
+    /* User Profile Summary Card */
+    .profile-summary {
+      background: var(--bg-light);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .avatar-circle {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+      font-weight: 700;
+      box-shadow: var(--shadow-md);
+    }
+
+    .summary-info h2 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .summary-info p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+    @media (max-width: 600px) {
+      .header-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      .actions-top {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .profile-summary {
+        flex-direction: column;
+        text-align: center;
+        padding: 2rem 1rem;
+      }
+      .content-area {
+        padding: 1.5rem;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="profile-container">
-    <h2>My Profile</h2>
-    <div class="info" id="userName">Name: </div>
-    <div class="info" id="userEmail">Email: </div>
-    <button id="logoutBtn">Logout</button>
+
+  <div class="container">
+    <!-- Header -->
+    <div class="header-bar">
+      <h1><i class="fa-solid fa-sliders"></i> Account Settings</h1>
+      <div class="actions-top">
+        <a href="index.html" class="btn btn-outline"><i class="fa-solid fa-house"></i> Home</a>
+        <button id="logoutBtn" class="btn btn-danger"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+      </div>
+    </div>
+
+    <!-- Tab Bar -->
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="switchTab('profile')">
+        <i class="fa-solid fa-user-gear"></i> Edit Profile
+      </button>
+      <button class="tab-btn" onclick="switchTab('enquiries')" id="enquiriesTabBtn">
+        <i class="fa-solid fa-comments"></i> Track Enquiries
+      </button>
+    </div>
+
+    <!-- Content Area -->
+    <div class="content-area">
+      
+      <!-- Profile Summary -->
+      <div class="profile-summary">
+        <div class="avatar-circle" id="avatarLetter">U</div>
+        <div class="summary-info">
+          <h2 id="sumName">User Name</h2>
+          <p id="sumEmail">user@example.com</p>
+        </div>
+      </div>
+
+      <!-- Alerts -->
+      <div id="alertSuccess" class="alert alert-success">
+        <i class="fa-solid fa-circle-check"></i> <span id="successMsg">Success message</span>
+      </div>
+      <div id="alertError" class="alert alert-error">
+        <i class="fa-solid fa-triangle-exclamation"></i> <span id="errorMsg">Error message</span>
+      </div>
+
+      <!-- Tab: Profile Settings -->
+      <div id="profileTab" class="tab-content active">
+        <form id="profileForm">
+          <div class="form-group">
+            <label for="profileName">Full Name</label>
+            <input type="text" id="profileName" class="form-control" placeholder="Your Name" required>
+          </div>
+          <div class="form-group">
+            <label for="profileEmail">Email Address</label>
+            <input type="email" id="profileEmail" class="form-control" placeholder="yourname@example.com" required>
+          </div>
+          <div class="form-group">
+            <label for="profilePassword">New Password (Leave blank to keep current)</label>
+            <input type="password" id="profilePassword" class="form-control" placeholder="••••••••" minlength="6">
+            <p class="form-info-text">Must be at least 6 characters long.</p>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 0.85rem;">
+            <i class="fa-solid fa-floppy-disk"></i> Save Profile Changes
+          </button>
+        </form>
+      </div>
+
+      <!-- Tab: Track Enquiries -->
+      <div id="enquiriesTab" class="tab-content">
+        <div id="enquiriesList">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+    </div>
   </div>
 
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const userData = localStorage.getItem("user");
-      if (!userData) {
-        window.location.href = "login.html"; // Redirect if not logged in
-        return;
-      }
-      
-      const user = JSON.parse(userData);
-      document.getElementById("userName").textContent = `Name: ${user.name}`;
-      document.getElementById("userEmail").textContent = `Email: ${user.email}`;
+    const token = localStorage.getItem("accessToken");
+    const userData = localStorage.getItem("user");
 
+    // Redirect to login if not authenticated
+    if (!token || !userData) {
+      window.location.href = "login.html";
+    }
+
+    const user = JSON.parse(userData);
+
+    // Initial setup
+    document.addEventListener("DOMContentLoaded", () => {
+      // Set initial values
+      document.getElementById("profileName").value = user.name || "";
+      document.getElementById("profileEmail").value = user.email || "";
+      updateProfileSummary(user.name, user.email);
+
+      // Handle profile update form submission
+      const form = document.getElementById("profileForm");
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        hideAlerts();
+
+        const name = document.getElementById("profileName").value.trim();
+        const email = document.getElementById("profileEmail").value.trim();
+        const password = document.getElementById("profilePassword").value;
+
+        const updateData = { name, email };
+        if (password) {
+          updateData.password = password;
+        }
+
+        try {
+          const res = await fetch("http://localhost:5000/api/auth/profile", {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": "Bearer " + token
+            },
+            body: JSON.stringify(updateData)
+          });
+
+          const data = await res.json();
+          if (res.ok && data.success) {
+            showAlert("success", "✅ Profile updated successfully!");
+            // Update local storage
+            localStorage.setItem("user", JSON.stringify(data.user));
+            updateProfileSummary(data.user.name, data.user.email);
+            document.getElementById("profilePassword").value = ""; // Clear password field
+          } else {
+            showAlert("error", "❌ " + (data.error || "Failed to update profile."));
+          }
+        } catch (err) {
+          console.error("Profile update error:", err);
+          showAlert("error", "❌ Connection error updating profile. Please try again.");
+        }
+      });
+
+      // Handle logout
       document.getElementById("logoutBtn").addEventListener("click", () => {
         localStorage.removeItem("user");
         localStorage.removeItem("accessToken");
         localStorage.removeItem("role");
         window.location.href = "index.html";
       });
+
+      // Fetch enquiries on load
+      fetchUserEnquiries();
     });
+
+    function updateProfileSummary(name, email) {
+      document.getElementById("sumName").textContent = name || "User Name";
+      document.getElementById("sumEmail").textContent = email || "user@example.com";
+      document.getElementById("avatarLetter").textContent = (name || "U").charAt(0).toUpperCase();
+    }
+
+    // Switch Tabs
+    function switchTab(tabName) {
+      document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+      document.querySelectorAll(".tab-content").forEach(content => content.classList.remove("active"));
+
+      if (tabName === 'profile') {
+        document.querySelector(".tab-btn:nth-child(1)").classList.add("active");
+        document.getElementById("profileTab").classList.add("active");
+      } else {
+        document.getElementById("enquiriesTabBtn").classList.add("active");
+        document.getElementById("enquiriesTab").classList.add("active");
+        fetchUserEnquiries(); // Refresh enquiries when clicking the tab
+      }
+    }
+
+    // Fetch user enquiries
+    async function fetchUserEnquiries() {
+      const listContainer = document.getElementById("enquiriesList");
+      listContainer.innerHTML = `<div class="no-enquiries"><i class="fa-solid fa-spinner fa-spin"></i><p>Loading your enquiries...</p></div>`;
+
+      try {
+        const res = await fetch("http://localhost:5000/api/enquiries/user", {
+          headers: {
+            "Authorization": "Bearer " + token
+          }
+        });
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch enquiries");
+        }
+
+        const enquiries = await res.json();
+        listContainer.innerHTML = "";
+
+        if (!Array.isArray(enquiries) || enquiries.length === 0) {
+          listContainer.innerHTML = `
+            <div class="no-enquiries">
+              <i class="fa-solid fa-circle-question"></i>
+              <p>You haven't submitted any enquiries yet.</p>
+              <a href="enquiry.html" class="btn btn-primary mt-3" style="text-decoration:none;"><i class="fa-solid fa-paper-plane"></i> Send Enquiry</a>
+            </div>
+          `;
+          return;
+        }
+
+        enquiries.forEach(e => {
+          const hasResponse = e.response && e.response.trim() !== "";
+          const status = e.status || (hasResponse ? "resolved" : "pending");
+          
+          let progressWidth = "0%";
+          let step1Class = "step-node completed";
+          let step2Class = "step-node";
+          let step3Class = "step-node";
+          let step4Class = "step-node";
+
+          if (status === "under_review") {
+            progressWidth = "33.3%";
+            step1Class = "step-node completed";
+            step2Class = "step-node active";
+          } else if (status === "in_progress") {
+            progressWidth = "66.6%";
+            step1Class = "step-node completed";
+            step2Class = "step-node completed";
+            step3Class = "step-node active";
+          } else if (status === "resolved") {
+            progressWidth = "100%";
+            step1Class = "step-node completed";
+            step2Class = "step-node completed";
+            step3Class = "step-node completed";
+            step4Class = "step-node completed";
+          } else { // pending
+            step1Class = "step-node active";
+          }
+
+          let badgeText = "Pending";
+          let badgeClass = "badge-pending";
+          if (status === "under_review") {
+            badgeText = "Under Review";
+            badgeClass = "badge-under-review";
+          } else if (status === "in_progress") {
+            badgeText = "In Progress";
+            badgeClass = "badge-in-progress";
+          } else if (status === "resolved") {
+            badgeText = "Resolved";
+            badgeClass = "badge-replied";
+          }
+
+          const card = document.createElement("div");
+          card.className = "enquiry-card";
+
+          let responseHtml = "";
+          if (hasResponse) {
+            responseHtml = `
+              <div class="response-section">
+                <div class="response-header">
+                  <i class="fa-solid fa-reply-all"></i> Admin Response
+                </div>
+                <div class="response-text">${escapeHTML(e.response)}</div>
+              </div>
+            `;
+          } else {
+            responseHtml = `
+              <div class="response-section" style="background: #f1f5f9; border-left-color: #94a3b8;">
+                <div class="response-header" style="color: #475569;">
+                  <i class="fa-solid fa-hourglass-half"></i> Status Update
+                </div>
+                <div class="response-text" style="color: #64748b; font-style: italic;">
+                  Our support team is reviewing your message. We will reply here shortly.
+                </div>
+              </div>
+            `;
+          }
+
+          const stepperHtml = `
+            <div class="stepper-container">
+              <div class="stepper-line">
+                <div class="stepper-line-fill" style="width: ${progressWidth}"></div>
+              </div>
+              <div class="${step1Class}">
+                <div class="step-circle"><i class="fa-solid fa-paper-plane"></i></div>
+                <div class="step-label">Submitted</div>
+              </div>
+              <div class="${step2Class}">
+                <div class="step-circle"><i class="fa-solid fa-magnifying-glass"></i></div>
+                <div class="step-label">Reviewing</div>
+              </div>
+              <div class="${step3Class}">
+                <div class="step-circle"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+                <div class="step-label">In Progress</div>
+              </div>
+              <div class="${step4Class}">
+                <div class="step-circle"><i class="fa-solid fa-circle-check"></i></div>
+                <div class="step-label">Resolved</div>
+              </div>
+            </div>
+          `;
+
+          card.innerHTML = `
+            <div class="enquiry-header">
+              <span class="enquiry-date"><i class="fa-regular fa-clock"></i> ${new Date(e.createdAt).toLocaleString()}</span>
+              <span class="enquiry-badge ${badgeClass}">${badgeText}</span>
+            </div>
+            <div class="enquiry-message">
+              <strong>Message Sent:</strong><br>
+              ${escapeHTML(e.message)}
+            </div>
+            ${stepperHtml}
+            ${responseHtml}
+          `;
+
+          listContainer.appendChild(card);
+        });
+
+      } catch (err) {
+        console.error("Error loading enquiries:", err);
+        listContainer.innerHTML = `
+          <div class="no-enquiries" style="color: #ef4444;">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <p>Error loading enquiries. Please log in again or refresh.</p>
+          </div>
+        `;
+      }
+    }
+
+    // Helper functions
+    function showAlert(type, message) {
+      hideAlerts();
+      if (type === "success") {
+        document.getElementById("successMsg").textContent = message;
+        document.getElementById("alertSuccess").style.display = "flex";
+      } else {
+        document.getElementById("errorMsg").textContent = message;
+        document.getElementById("alertError").style.display = "flex";
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function hideAlerts() {
+      document.getElementById("alertSuccess").style.display = "none";
+      document.getElementById("alertError").style.display = "none";
+    }
+
+    function escapeHTML(str) {
+      return str.replace(/[&<>'"]/g, 
+        tag => ({
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          "'": '&#39;',
+          '"': '&quot;'
+        }[tag] || tag)
+      );
+    }
   </script>
+
 </body>
 </html>

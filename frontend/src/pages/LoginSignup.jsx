@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
-import { LoginSignup} from '../api/api';
-import { saveToken } from '../utils/auth';
+import { LoginSignup } from '../api/apiClient';
 import { useNavigate } from 'react-router-dom';
 
 export default function Login(){
@@ -11,8 +10,8 @@ export default function Login(){
   const submit = async e => {
     e.preventDefault(); setErr(null);
     try{
-      const res = await login(form);
-      saveToken(res.data.token);
+      const res = await LoginSignup(form);
+      localStorage.setItem("token", res.data.token);
       nav('/admin');
     }catch(err){ setErr(err.response?.data?.error || 'Login failed'); }
   }

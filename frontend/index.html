@@ -7,6 +7,11 @@
   </head>
   <body class="bg-gray-50">
     <div id="root"></div>
+    <script>
+      window.addEventListener('error', function(event) {
+        document.body.innerHTML += '<div style="color: red; padding: 20px; font-family: sans-serif; position: absolute; top: 0; left: 0; right: 0; background: white; z-index: 9999; border-bottom: 2px solid red;"><h3>Frontend Error:</h3><pre>' + event.error.stack + '</pre></div>';
+      });
+    </script>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

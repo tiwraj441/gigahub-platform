@@ -3,6 +3,7 @@ import Admin from "../models/Admin.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import Enquiry from "../models/Enquiry.js";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const router = express.Router();
 
@@ -34,7 +35,8 @@ router.get("/enquiries", verifyToken, async (req, res) => {
 // Admin registration
 router.post("/register", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    let { email, password } = req.body;
+    email = email ? email.toLowerCase().trim() : "";
     if (!email || !password) return res.status(400).json({ error: "Email and password required" });
 
     const existing = await Admin.findOne({ email });
@@ -56,7 +58,8 @@ router.post("/register", async (req, res) => {
 // Admin login
 router.post("/login", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    let { email, password } = req.body;
+    email = email ? email.toLowerCase().trim() : "";
     const admin = await Admin.findOne({ email });
     if (!admin) return res.status(400).json({ error: "Invalid credentials" });
 
@@ -68,6 +71,74 @@ router.post("/login", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Server error" });
+  }
+});
+
+// Respond to an enquiry (admin only)
+router.put("/enquiries/:id/respond", verifyToken, async (req, res) => {
+  try {
+    const { response, status } = req.body;
+    if (response === undefined && status === undefined) {
+      return res.status(400).json({ error: "Either response or status is required" });
+    }
+
+    const enquiry = await Enquiry.findById(req.params.id);
+    if (!enquiry) return res.status(404).json({ error: "Enquiry not found" });
+
+    if (response !== undefined) {
+      enquiry.response = response;
+      if (status === undefined && enquiry.status !== "resolved") {
+        enquiry.status = "resolved";
+      }
+    }
+    
+    if (status !== undefined) {
+      enquiry.status = status;
+    }
+
+    await enquiry.save();
+
+    res.json({ success: true, message: "Enquiry updated successfully!", enquiry });
+  } catch (err) {
+    console.error("Error responding to enquiry:", err);
+    res.status(500).json({ error: "Server error responding to enquiry" });
+  }
+});
+
+// Generate AI-suggested response for an enquiry (admin only)
+router.post("/enquiries/:id/suggest-reply", verifyToken, async (req, res) => {
+  try {
+    const enquiry = await Enquiry.findById(req.params.id);
+    if (!enquiry) return res.status(404).json({ error: "Enquiry not found" });
+
+    if (!process.env.GEMINI_API_KEY) {
+      return res.status(400).json({ 
+        error: "GEMINI_API_KEY is not set in backend/.env. Please configure it to use the AI reply assistant." 
+      });
+    }
+
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+
+    const prompt = `You are a professional IT support agent from Gigahub IT Services. 
+An enquiry has been received from a client with the following details:
+Client Name: ${enquiry.name || "Client"}
+Client Phone: ${enquiry.phone || "N/A"}
+Client Email: ${enquiry.email || "N/A"}
+Client Message:
+"${enquiry.message}"
+
+Please generate a professional, helpful, and concise response to this client. 
+Acknowledge their concern/request, offer a helpful suggestion or step, and tell them that we are looking forward to assisting them.
+Keep it strictly under 150 words. Do not include subject lines or greetings like "Dear Admin", generate ONLY the direct body of the email response that the admin can copy and paste to send to the client.`;
+
+    const result = await model.generateContent(prompt);
+    const text = result.response.text().trim();
+
+    res.json({ success: true, suggestion: text });
+  } catch (err) {
+    console.error("AI suggestion error:", err);
+    res.status(500).json({ error: "Failed to generate AI suggestion." });
   }
 });
 
