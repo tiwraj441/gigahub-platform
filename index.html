@@ -111,6 +111,38 @@
     </div>
   </section>
 
+  <!-- Core Assurances Section -->
+  <section class="core-assurances pt-5 pb-5 reveal-section" style="background: white; border-bottom: 1px solid #e2e8f0;">
+    <div class="container">
+      <div class="row text-center">
+        <!-- Feature 1: Uptime SLA -->
+        <div class="col-lg-4 col-md-6 mb-4">
+          <div class="assurance-card p-4" style="border: 1px solid #e2e8f0; border-radius: 12px; transition: transform 0.3s, box-shadow 0.3s; background: #f8fafc; text-align: center; height: 100%;">
+            <div style="font-size: 2.5rem; color: var(--accent); margin-bottom: 15px;"><i class="fas fa-history"></i></div>
+            <h5 style="font-weight: bold; margin-bottom: 10px; color: #1e293b;">4-Hour Response SLA</h5>
+            <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 0;">We guarantee troubleshooting response times within 4 hours to keep your team productive and operational.</p>
+          </div>
+        </div>
+        <!-- Feature 2: Onsite Support -->
+        <div class="col-lg-4 col-md-6 mb-4">
+          <div class="assurance-card p-4" style="border: 1px solid #e2e8f0; border-radius: 12px; transition: transform 0.3s, box-shadow 0.3s; background: #f8fafc; text-align: center; height: 100%;">
+            <div style="font-size: 2.5rem; color: var(--accent); margin-bottom: 15px;"><i class="fas fa-user-shield"></i></div>
+            <h5 style="font-weight: bold; margin-bottom: 10px; color: #1e293b;">24/7 Onsite Backup Support</h5>
+            <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 0;">Our certified IT engineers provide round-the-clock onsite assistance for setups, conferences, and exams.</p>
+          </div>
+        </div>
+        <!-- Feature 3: PAN India Logistics -->
+        <div class="col-lg-4 col-md-12 mb-4">
+          <div class="assurance-card p-4" style="border: 1px solid #e2e8f0; border-radius: 12px; transition: transform 0.3s, box-shadow 0.3s; background: #f8fafc; text-align: center; height: 100%;">
+            <div style="font-size: 2.5rem; color: var(--accent); margin-bottom: 15px;"><i class="fas fa-map-marked-alt"></i></div>
+            <h5 style="font-weight: bold; margin-bottom: 10px; color: #1e293b;">PAN India Logistics</h5>
+            <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 0;">Seamless IT equipment dispatch, deployment, and configuration in NCR, Mumbai, Bangalore, Pune, and nationwide.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section id="about" class="about reveal-section">
   <div class="container">
     <div class="row align-items-center">
@@ -451,6 +483,123 @@
   </div>
 </section-->
 
+<!-- Instant Rental Price Calculator Section -->
+<section id="pricing-calculator" class="reveal-section" style="padding: 60px 0; background: var(--bg-light); border-bottom: 1px solid #e2e8f0;">
+  <div class="container" style="max-width: 800px; margin: 0 auto;">
+    <div style="text-align: center; margin-bottom: 40px;">
+      <h1 class="heading" style="color: var(--accent); margin-bottom: 10px; text-transform: uppercase;">Instant Rent Calculator</h1>
+      <p style="color: #64748b; font-size: 1rem;">Estimate your monthly rental cost instantly and request a custom quote.</p>
+    </div>
+    
+    <div style="background: white; border-radius: 16px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #e2e8f0;">
+      <div class="row">
+        <!-- Input controls -->
+        <div class="col-md-6" style="margin-bottom: 20px;">
+          <div style="margin-bottom: 20px;">
+            <label style="display: block; font-weight: bold; margin-bottom: 8px; color: #334155; font-size: 0.95rem;">1. Select Equipment type:</label>
+            <select id="calc-device" onchange="calculateRent()" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 1rem; color: #1e293b; background: white;">
+              <option value="1500" data-name="Laptop">Laptop (from ₹1,500/mo)</option>
+              <option value="8000" data-name="Server">Server (from ₹8,000/mo)</option>
+              <option value="4000" data-name="Mac System">Mac System (from ₹4,000/mo)</option>
+              <option value="3500" data-name="Work Station">Work Station (from ₹3,500/mo)</option>
+              <option value="1200" data-name="Desktop">Desktop (from ₹1,200/mo)</option>
+              <option value="800" data-name="Tablet">Tablet (from ₹800/mo)</option>
+              <option value="500" data-name="CCTV System">CCTV System (from ₹500/mo)</option>
+              <option value="600" data-name="Scanner">Scanner (from ₹600/mo)</option>
+              <option value="400" data-name="UPS System">UPS (from ₹400/mo)</option>
+            </select>
+          </div>
+          
+          <div style="margin-bottom: 20px;">
+            <label style="display: block; font-weight: bold; margin-bottom: 8px; color: #334155; font-size: 0.95rem;">2. Quantity required:</label>
+            <input type="number" id="calc-qty" value="1" min="1" max="500" oninput="calculateRent()" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 1rem; color: #1e293b;">
+          </div>
+          
+          <div style="margin-bottom: 10px;">
+            <label style="display: block; font-weight: bold; margin-bottom: 8px; color: #334155; font-size: 0.95rem;">3. Lease Duration: <span id="calc-duration-val" style="color: var(--accent); font-weight: 800;">3 Months</span></label>
+            <input type="range" id="calc-duration" min="1" max="24" value="3" oninput="calculateRent()" style="width: 100%; accent-color: var(--accent);">
+            <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: #64748b; margin-top: 5px;">
+              <span>1 Month</span>
+              <span>12 Months</span>
+              <span>24 Months</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Live result card -->
+        <div class="col-md-6" style="display: flex; flex-direction: column; justify-content: center; align-items: center; border-left: 1px solid #e2e8f0; padding-left: 30px; margin-bottom: 20px;">
+          <div style="background: #f8fafc; border-radius: 12px; width: 100%; padding: 25px; text-align: center; border: 1px dashed #cbd5e1;">
+            <div style="font-size: 0.85rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px;">Estimated Rental Cost</div>
+            <div style="font-size: 2.2rem; font-weight: 800; color: #1e293b; margin-bottom: 5px;" id="calc-monthly-est">₹1,350 <span style="font-size: 1rem; font-weight: normal; color: #64748b;">/ mo</span></div>
+            <div style="font-size: 0.85rem; color: #10b981; font-weight: bold; margin-bottom: 15px;" id="calc-discount-label">Includes 10% Long-term Discount</div>
+            <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 15px 0;">
+            <div style="font-size: 0.9rem; color: #475569;">Total Contract Value: <strong id="calc-total-est" style="color: var(--accent);">₹4,050</strong></div>
+          </div>
+          
+          <button onclick="sendCalcEnquiry()" class="btn" style="width: 100%; margin-top: 20px; background: var(--accent); color: white; padding: 14px; border-radius: 8px; font-weight: bold; border: none; font-size: 1rem; box-shadow: 0 4px 12px rgba(0,168,204,0.2); transition: background 0.3s; cursor: pointer;">Get Special Quote</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+function calculateRent() {
+  const basePrice = parseFloat(document.getElementById('calc-device').value);
+  const qty = parseInt(document.getElementById('calc-qty').value) || 1;
+  const duration = parseInt(document.getElementById('calc-duration').value);
+  
+  document.getElementById('calc-duration-val').textContent = duration + (duration === 1 ? ' Month' : ' Months');
+  
+  // Calculate discount based on duration
+  let discount = 0;
+  let discountLabel = "No Long-term Discount applied";
+  if (duration >= 2 && duration <= 5) {
+    discount = 0.10;
+    discountLabel = "Includes 10% Short-term Lease Discount";
+  } else if (duration >= 6 && duration <= 11) {
+    discount = 0.20;
+    discountLabel = "Includes 20% Medium-term Lease Discount";
+  } else if (duration >= 12) {
+    discount = 0.30;
+    discountLabel = "Includes 30% Long-term Lease Discount";
+  }
+  
+  const unitPriceAfterDiscount = basePrice * (1 - discount);
+  const monthlyTotal = Math.round(unitPriceAfterDiscount * qty);
+  const contractTotal = monthlyTotal * duration;
+  
+  document.getElementById('calc-monthly-est').innerHTML = '₹' + monthlyTotal.toLocaleString('en-IN') + ' <span style="font-size: 1rem; font-weight: normal; color: #64748b;">/ mo</span>';
+  document.getElementById('calc-discount-label').textContent = discountLabel;
+  if (discount > 0) {
+    document.getElementById('calc-discount-label').style.color = '#10b981';
+  } else {
+    document.getElementById('calc-discount-label').style.color = '#64748b';
+  }
+  document.getElementById('calc-total-est').textContent = '₹' + contractTotal.toLocaleString('en-IN');
+}
+
+function sendCalcEnquiry() {
+  const deviceSelect = document.getElementById('calc-device');
+  const deviceName = deviceSelect.options[deviceSelect.selectedIndex].getAttribute('data-name');
+  const qty = document.getElementById('calc-qty').value;
+  const duration = document.getElementById('calc-duration').value;
+  const monthlyEst = document.getElementById('calc-monthly-est').innerText;
+  
+  const messageVal = `I am interested in leasing ${qty} x ${deviceName}(s) for a duration of ${duration} month(s). Please send a custom quote for this. Estimated budget: ${monthlyEst.trim()}`;
+  
+  // Redirect to enquiry page with pre-filled message params
+  window.location.href = `enquiry.html?message=${encodeURIComponent(messageVal)}`;
+}
+
+// Run initial calculation on page load
+document.addEventListener('DOMContentLoaded', () => {
+  if (document.getElementById('calc-device')) {
+    calculateRent();
+  }
+});
+</script>
+
 <section id="contact" class="contact">
     <h1 class="heading">get in touch</h1>
 </section>
@@ -647,18 +796,47 @@ form.addEventListener("submit", async (e) => {
 
 <!-- AI Chat Widget -->
 <div id="ai-chat-widget">
-  <div id="chat-toggle-btn" onclick="toggleChat()">
-    <i class="fas fa-robot"></i>
+  <div id="chat-popup-bubble" onclick="toggleChat()">
+    May I help you?
+    <span class="close-popup" onclick="event.stopPropagation(); closePopupBubble()">✖</span>
+  </div>
+
+  <div id="chat-toggle-btn" onclick="toggleChat()" style="overflow: hidden; padding: 0; background: none;">
+    <img src="./images/avatar.png" alt="avtaar" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
   </div>
   
   <div id="chat-window">
-    <div class="chat-header">
-      Gigahub AI Agent
-      <span class="close-chat" onclick="toggleChat()">✖</span>
+    <div class="chat-header" style="display:flex; align-items:center; justify-content:space-between; gap:10px; padding: 12px 15px; background: var(--accent);">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <img src="./images/avatar.png" alt="avtaar" style="width:38px; height:38px; border-radius:50%; object-fit:cover; border:2px solid rgba(255,255,255,0.2);">
+        <div>
+          <div style="font-weight:bold; font-size:14px; line-height:1.2; color:#fff;">avtaar</div>
+          <div style="font-size:10px; opacity:0.9; font-weight:normal; color:#e2e8f0; display:flex; align-items:center; gap:3px;"><i class="far fa-clock"></i> Usual reply time: 2 to 3 Minutes</div>
+        </div>
+      </div>
+      <span class="close-chat" onclick="toggleChat()" style="color:#fff; font-size: 16px;">✖</span>
     </div>
-    <div class="chat-body" id="chat-history">
-      <div class="msg ai">Hello! I'm the Gigahub AI Agent. How can I assist you with laptops, networking, or IT support today?</div>
+    
+    <div class="chat-body" id="chat-history" style="padding: 12px; display: flex; flex-direction: column; gap: 8px; overflow-y: scroll; height: 320px; background: #f8f9fa;">
+      <div class="msg ai">Hi, is there anything we can help you with?</div>
+      
+      <div class="options-card">
+        <div class="options-header">Please Choose an Option</div>
+        <div class="options-list">
+          <button class="option-btn" onclick="selectChatOption('Laptops On Rent')">Laptops On Rent</button>
+          <button class="option-btn" onclick="selectChatOption('Servers On Rent')">Servers On Rent</button>
+          <button class="option-btn" onclick="selectChatOption('Examination Services')">Examination Services</button>
+          <button class="option-btn" onclick="selectChatOption('CCTV on Rent')">CCTV on Rent</button>
+          <button class="option-btn" onclick="selectChatOption('Mac System on Rent')">Mac System on Rent</button>
+          <button class="option-btn" onclick="selectChatOption('Tablet on Rent')">Tablet on Rent</button>
+          <button class="option-btn" onclick="selectChatOption('Work Station on Rent')">Work Station on Rent</button>
+          <button class="option-btn" onclick="selectChatOption('Desktop on Rent')">Desktop on Rent</button>
+          <button class="option-btn" onclick="selectChatOption('Scanners on Rent')">Scanners on Rent</button>
+          <button class="option-btn" onclick="selectChatOption('UPS on Rent')">UPS on Rent</button>
+        </div>
+      </div>
     </div>
+    
     <div class="chat-footer">
       <input type="text" id="chat-input" placeholder="Type your message..." onkeypress="if(event.key === 'Enter') sendChatMessage()">
       <button onclick="sendChatMessage()"><i class="fas fa-paper-plane"></i></button>
@@ -677,13 +855,7 @@ form.addEventListener("submit", async (e) => {
 #chat-toggle-btn {
   width: 60px;
   height: 60px;
-  background: var(--accent);
-  color: white;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
   cursor: pointer;
   box-shadow: 0 4px 15px rgba(0,0,0,0.2);
   transition: transform 0.3s;
@@ -703,31 +875,14 @@ form.addEventListener("submit", async (e) => {
   overflow: hidden;
   flex-direction: column;
 }
-.chat-header {
-  background: var(--accent);
-  color: white;
-  padding: 15px;
-  font-weight: bold;
-  display: flex;
-  justify-content: space-between;
-}
 .close-chat {
   cursor: pointer;
-}
-.chat-body {
-  height: 300px;
-  padding: 15px;
-  overflow-y: auto;
-  background: #f8f9fa;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
 }
 .msg {
   padding: 10px;
   border-radius: 8px;
   font-size: 14px;
-  max-width: 80%;
+  max-width: 85%;
   line-height: 1.4;
   word-wrap: break-word;
 }
@@ -777,14 +932,291 @@ form.addEventListener("submit", async (e) => {
 .enquiry-prompt-btn:hover {
   background: #218838;
 }
+.options-card {
+  background: #f1f5f9;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  max-width: 85%;
+  align-self: flex-start;
+  margin-top: 5px;
+}
+.options-header {
+  background: #e2e8f0;
+  color: #475569;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+}
+.options-list {
+  display: flex;
+  flex-direction: column;
+  max-height: 180px;
+  overflow-y: auto;
+}
+.options-list::-webkit-scrollbar {
+  width: 5px;
+}
+.options-list::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+.options-list::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+.options-list::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+.option-btn {
+  background: white;
+  border: none;
+  border-bottom: 1px solid #f1f5f9;
+  color: #2563eb;
+  padding: 10px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: center;
+  transition: background 0.2s;
+}
+.option-btn:last-child {
+  border-bottom: none;
+}
+.option-btn:hover {
+  background: #f8fafc;
+}
+
+/* Custom Scrollbar Styles to ensure scrollability is visible */
+.chat-body::-webkit-scrollbar {
+  width: 6px;
+}
+.chat-body::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+.chat-body::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+.chat-body::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+#chat-popup-bubble {
+  position: absolute;
+  bottom: 10px;
+  right: 75px;
+  background: white;
+  color: #1e293b;
+  padding: 10px 14px;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 9998;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInBubble 0.5s forwards, floatBubble 2s infinite ease-in-out alternate;
+  animation-delay: 1.5s, 2s;
+}
+#chat-popup-bubble::after {
+  content: '';
+  position: absolute;
+  right: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 8px 0 8px 8px;
+  border-style: solid;
+  border-color: transparent transparent transparent white;
+}
+.close-popup {
+  font-size: 14px;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: color 0.2s;
+  padding-left: 2px;
+}
+.close-popup:hover {
+  color: #ef4444;
+}
+
+@keyframes fadeInBubble {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes floatBubble {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-5px); }
+}
 </style>
 
 <script>
 let aiChatHistory = [];
+let chatFlowState = {
+  active: false,
+  step: 0,
+  data: {}
+};
+
+function closePopupBubble() {
+  const bubble = document.getElementById('chat-popup-bubble');
+  if (bubble) bubble.style.display = 'none';
+}
 
 function toggleChat() {
   const win = document.getElementById('chat-window');
   win.style.display = win.style.display === 'flex' ? 'none' : 'flex';
+  closePopupBubble();
+}
+
+function addChatMessageUI(sender, text) {
+  const historyDiv = document.getElementById('chat-history');
+  let msgClass = sender === 'ai' ? 'msg ai' : 'msg user';
+  historyDiv.innerHTML += `<div class="${msgClass}">${text}</div>`;
+  historyDiv.scrollTop = historyDiv.scrollHeight;
+}
+
+function selectChatOption(option) {
+  const token = localStorage.getItem("accessToken");
+  if (!token) {
+    addChatMessageUI('user', option);
+    addChatMessageUI('ai', '❌ You must be logged in to submit enquiries. Please <a href="login.html" style="color:var(--accent);font-weight:bold;text-decoration:underline;">login</a> or <a href="signup.html" style="color:var(--accent);font-weight:bold;text-decoration:underline;">signup</a> first.');
+    return;
+  }
+  
+  // Start interactive flow
+  chatFlowState.active = true;
+  chatFlowState.step = 1;
+  chatFlowState.data = { service: option };
+  
+  addChatMessageUI('user', `I am interested in: ${option}`);
+  
+  // Suggest/pre-fill name from localStorage if logged in
+  let prefillInfo = "";
+  const userData = localStorage.getItem("user");
+  if (userData && userData !== "undefined") {
+    try {
+      const user = JSON.parse(userData);
+      if (user && user.name) {
+        chatFlowState.data.name = user.name;
+        prefillInfo = ` (We detected your name as: <strong>${user.name}</strong>. Press Enter or type Send to confirm, or enter a different name)`;
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+  
+  addChatMessageUI('ai', `Great choice! Let's get some details to send your enquiry.${prefillInfo}<br><br><strong>Please enter your Name:</strong>`);
+}
+
+async function handleFlowInput(text) {
+  if (chatFlowState.step === 1) {
+    if ((text.toLowerCase() === 'confirm' || text.toLowerCase() === 'yes' || text.toLowerCase() === 'send') && chatFlowState.data.name) {
+      // Keep pre-filled name
+    } else {
+      chatFlowState.data.name = text;
+    }
+    
+    chatFlowState.step = 2;
+    addChatMessageUI('ai', `Got it, <strong>${chatFlowState.data.name}</strong>.<br><br><strong>Please enter your 10-digit Phone Number:</strong>`);
+    return;
+  }
+  
+  if (chatFlowState.step === 2) {
+    const cleanPhone = text.replace(/[\s-+]/g, "");
+    const phoneRegex = /^[0-9]{10}$/;
+    if (!phoneRegex.test(cleanPhone)) {
+      addChatMessageUI('ai', `⚠️ Invalid phone number. Please enter a valid 10-digit phone number:`);
+      return;
+    }
+    chatFlowState.data.phone = cleanPhone;
+    
+    // Suggest/pre-fill email if logged in
+    let prefillInfo = "";
+    const userData = localStorage.getItem("user");
+    if (userData && userData !== "undefined") {
+      try {
+        const user = JSON.parse(userData);
+        if (user && user.email) {
+          chatFlowState.data.email = user.email;
+          prefillInfo = ` (We detected your email as: <strong>${user.email}</strong>. Press Enter or type Send to confirm, or enter a different email)`;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    
+    chatFlowState.step = 3;
+    addChatMessageUI('ai', `Thank you.${prefillInfo}<br><br><strong>Please enter your Email Address:</strong>`);
+    return;
+  }
+  
+  if (chatFlowState.step === 3) {
+    if ((text.toLowerCase() === 'confirm' || text.toLowerCase() === 'yes' || text.toLowerCase() === 'send') && chatFlowState.data.email) {
+      // Keep pre-filled email
+    } else {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(text)) {
+        addChatMessageUI('ai', `⚠️ Invalid email address. Please enter a valid email:`);
+        return;
+      }
+      chatFlowState.data.email = text;
+    }
+    
+    chatFlowState.step = 4;
+    addChatMessageUI('ai', `Awesome! Is there any additional message or requirements you'd like to add?<br><br>Type your message below, or type <strong>"None"</strong> to send as is.`);
+    return;
+  }
+  
+  if (chatFlowState.step === 4) {
+    let messageInput = text;
+    if (text.toLowerCase() === 'none') {
+      messageInput = `Enquiry for ${chatFlowState.data.service} submitted via chatbot.`;
+    }
+    
+    chatFlowState.data.message = messageInput;
+    
+    addChatMessageUI('ai', `⏳ Submitting your enquiry to Gigahub...`);
+    
+    const token = localStorage.getItem("accessToken");
+    try {
+      const res = await fetch("http://localhost:5000/api/contact", {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify({
+          name: chatFlowState.data.name,
+          phone: chatFlowState.data.phone,
+          email: chatFlowState.data.email,
+          message: `[Chatbot Lead - ${chatFlowState.data.service}] ${chatFlowState.data.message}`
+        })
+      });
+      
+      const data = await res.json();
+      if (res.ok && data.success) {
+        addChatMessageUI('ai', `✅ <strong>Your enquiry has been successfully submitted!</strong><br><br>We have logged your request for <strong>${chatFlowState.data.service}</strong>. Our team will contact you shortly.<br><br>Is there anything else I can help you with?`);
+      } else {
+        addChatMessageUI('ai', `❌ Failed to submit enquiry: ${data.error || "Please try again later."}`);
+      }
+    } catch (err) {
+      console.error(err);
+      addChatMessageUI('ai', `❌ Server error submitting enquiry. Please try again.`);
+    }
+    
+    // Reset flow state
+    chatFlowState.active = false;
+    chatFlowState.step = 0;
+    chatFlowState.data = {};
+  }
 }
 
 async function sendChatMessage() {
@@ -792,12 +1224,14 @@ async function sendChatMessage() {
   const text = input.value.trim();
   if (!text) return;
 
-  const historyDiv = document.getElementById('chat-history');
-  
-  // Add user msg to UI
-  historyDiv.innerHTML += `<div class="msg user">${text}</div>`;
   input.value = '';
-  historyDiv.scrollTop = historyDiv.scrollHeight;
+
+  if (chatFlowState.active) {
+    await handleFlowInput(text);
+    return;
+  }
+
+  addChatMessageUI('user', text);
 
   // Add to history
   aiChatHistory.push({ role: 'user', text });
@@ -814,18 +1248,15 @@ async function sendChatMessage() {
     aiChatHistory.push({ role: 'ai', text: data.reply });
     
     // Render AI reply
-    let replyHtml = `<div class="msg ai">${data.reply}`;
-    
+    let replyHtml = `${data.reply}`;
     if (data.showEnquiryPrompt) {
       replyHtml += `<br><a href="#contact" onclick="toggleChat()" class="enquiry-prompt-btn">📝 Fill Enquiry Form</a>`;
     }
     
-    replyHtml += '</div>';
-    historyDiv.innerHTML += replyHtml;
-    historyDiv.scrollTop = historyDiv.scrollHeight;
+    addChatMessageUI('ai', replyHtml);
 
   } catch(e) {
-    historyDiv.innerHTML += `<div class="msg ai" style="color:red;">Error connecting to AI. Please try again later.</div>`;
+    addChatMessageUI('ai', `<span style="color:red;">Error connecting to AI. Please try again later.</span>`);
   }
 }
 </script>

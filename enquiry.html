@@ -188,7 +188,52 @@
       <input type="text" name="name" placeholder="Full Name" required>
       <input type="tel" name="phone" placeholder="Phone Number" pattern="[0-9]{10}" maxlength="10" required>
       <input type="email" name="email" placeholder="Email" required>
-      <textarea name="message" placeholder="Your Message" required></textarea>
+      
+      <!-- Custom Configuration Section -->
+      <div style="text-align: left; margin: 15px 0 10px 0; border: 1px dashed #cbd5e1; padding: 12px; border-radius: 8px; background: #f8fafc;">
+        <label style="font-size: 0.85rem; font-weight: bold; color: #475569; display: block; margin-bottom: 8px;">💻 Customize Hardware Specifications:</label>
+        
+        <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+          <select name="processor" style="flex: 1; padding: 8px; border-radius: 6px; border: 1px solid #ccc; font-size: 0.9rem;">
+            <option value="">Select Processor</option>
+            <option value="Intel Core i5">Intel Core i5</option>
+            <option value="Intel Core i7">Intel Core i7</option>
+            <option value="Intel Core i9">Intel Core i9</option>
+            <option value="Intel Xeon">Intel Xeon</option>
+            <option value="AMD Ryzen 5/7">AMD Ryzen 5/7</option>
+            <option value="Apple Silicon M1/M2/M3">Apple Silicon</option>
+          </select>
+          
+          <select name="ram" style="flex: 1; padding: 8px; border-radius: 6px; border: 1px solid #ccc; font-size: 0.9rem;">
+            <option value="">Select RAM</option>
+            <option value="8 GB">8 GB RAM</option>
+            <option value="16 GB">16 GB RAM</option>
+            <option value="32 GB">32 GB RAM</option>
+            <option value="64 GB">64 GB RAM</option>
+            <option value="128 GB+">128 GB+</option>
+          </select>
+        </div>
+        
+        <div style="display: flex; gap: 8px;">
+          <select name="storage" style="flex: 1; padding: 8px; border-radius: 6px; border: 1px solid #ccc; font-size: 0.9rem;">
+            <option value="">Select Storage</option>
+            <option value="256 GB SSD">256 GB SSD</option>
+            <option value="512 GB SSD">512 GB SSD</option>
+            <option value="1 TB SSD">1 TB SSD</option>
+            <option value="2 TB+ SSD">2 TB+ SSD</option>
+            <option value="Custom HDD">Custom HDD</option>
+          </select>
+          
+          <select name="gpu" style="flex: 1; padding: 8px; border-radius: 6px; border: 1px solid #ccc; font-size: 0.9rem;">
+            <option value="">Select GPU</option>
+            <option value="Integrated Graphics">Integrated GPU</option>
+            <option value="NVIDIA RTX Dedicated">NVIDIA RTX Dedicated</option>
+            <option value="AMD Radeon">AMD Radeon</option>
+          </select>
+        </div>
+      </div>
+
+      <textarea name="message" placeholder="Your Message / Additional requirements" required></textarea>
       <button type="submit">Submit</button>
     </form>
     <p id="statusMessage"></p>
@@ -205,6 +250,13 @@
     const form = document.getElementById("enquiryForm");
     const statusMessage = document.getElementById("statusMessage");
 
+    // Pre-fill message from query param if available
+    const urlParams = new URLSearchParams(window.location.search);
+    const messageParam = urlParams.get('message');
+    if (messageParam) {
+      form.message.value = messageParam;
+    }
+
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       const token = localStorage.getItem("accessToken");
@@ -217,11 +269,20 @@
       statusMessage.textContent = "⏳ Sending your enquiry...";
       statusMessage.className = "info";
 
+      let specsText = "";
+      if (form.processor.value || form.ram.value || form.storage.value || form.gpu.value) {
+        specsText = `[Custom Configuration Requested:\n` +
+                    `- Processor: ${form.processor.value || 'Not specified'}\n` +
+                    `- RAM: ${form.ram.value || 'Not specified'}\n` +
+                    `- Storage: ${form.storage.value || 'Not specified'}\n` +
+                    `- GPU: ${form.gpu.value || 'Not specified'}]\n\n`;
+      }
+
       const formData = {
         name: form.name.value.trim(),
         phone: form.phone.value.trim(),
         email: form.email.value.trim(),
-        message: form.message.value.trim()
+        message: specsText + form.message.value.trim()
       };
 
       try {

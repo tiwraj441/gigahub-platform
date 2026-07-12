@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import Enquiry from "../models/Enquiry.js";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import nodemailer from "nodemailer";
 
 const router = express.Router();
 
@@ -89,6 +90,52 @@ router.put("/enquiries/:id/respond", verifyToken, async (req, res) => {
       enquiry.response = response;
       if (status === undefined && enquiry.status !== "resolved") {
         enquiry.status = "resolved";
+      }
+
+      // Send response email to the customer
+      if (enquiry.email) {
+        try {
+          const transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+              user: "r16302606@gmail.com",
+              pass: "umyo mbiz zpyn ivkf",
+            },
+          });
+
+          await transporter.sendMail({
+            from: `"Gigahub Support" <r16302606@gmail.com>`,
+            to: enquiry.email,
+            subject: `Update regarding your Gigahub Enquiry`,
+            html: `
+              <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px; background-color: #ffffff;">
+                <div style="border-bottom: 2px solid #06B6D4; padding-bottom: 15px; margin-bottom: 20px;">
+                  <h3 style="color: #0F172A; margin: 0;">Response to Your Enquiry</h3>
+                  <p style="color: #06B6D4; font-weight: bold; margin: 5px 0 0 0;">Gigahub Support Team</p>
+                </div>
+                <p>Hello <strong>${enquiry.name || "Customer"}</strong>,</p>
+                <p>An administrator has responded to your enquiry regarding:</p>
+                <blockquote style="background: #f8fafc; border-left: 4px solid #cbd5e1; padding: 10px 15px; margin: 15px 0; color: #475569; font-style: italic;">
+                  "${enquiry.message}"
+                </blockquote>
+                
+                <div style="background-color: #ecfeff; padding: 18px; border-radius: 8px; border: 1px solid #a5f3fc; margin: 20px 0;">
+                  <h4 style="margin-top: 0; color: #0891b2; font-size: 1rem;">Admin Response:</h4>
+                  <p style="margin: 0; white-space: pre-line; line-height: 1.6; color: #0f172a; font-weight: 500;">${response}</p>
+                </div>
+                
+                <p>You can check the real-time status of your enquiry by logging into your profile dashboard.</p>
+                
+                <div style="text-align: center; color: #64748b; font-size: 0.8rem; margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 15px;">
+                  © ${new Date().getFullYear()} Gigahub. All rights reserved.<br>
+                  House No.-I-10/863, Ground Floor Shop, Gali No.-10, Block I Sangam Vihar, Delhi-110080
+                </div>
+              </div>
+            `
+          });
+        } catch (emailErr) {
+          console.error("Failed to send reply email:", emailErr);
+        }
       }
     }
     
