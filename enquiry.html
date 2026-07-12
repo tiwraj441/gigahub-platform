@@ -196,11 +196,23 @@
   </div>
 
   <script>
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      alert("Please log in first to send enquiries.");
+      window.location.href = "login.html";
+    }
+
     const form = document.getElementById("enquiryForm");
     const statusMessage = document.getElementById("statusMessage");
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        statusMessage.textContent = "❌ You must be logged in to send enquiries. Please login or signup first.";
+        statusMessage.className = "error";
+        return;
+      }
 
       statusMessage.textContent = "⏳ Sending your enquiry...";
       statusMessage.className = "info";
@@ -215,7 +227,10 @@
       try {
         const res = await fetch("http://localhost:5000/api/contact", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { 
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+          },
           body: JSON.stringify(formData)
         });
 

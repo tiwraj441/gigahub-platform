@@ -88,7 +88,7 @@ document.getElementById('adminLoginForm').addEventListener('submit', async (e) =
             localStorage.setItem('adminToken', data.token);
             window.location.href = 'admin.html'; // your admin panel page
         } else {
-            alert(data.message || 'Invalid credentials');
+            alert(data.error || data.message || 'Invalid credentials');
         }
     } catch(err){
         console.error(err);

@@ -101,7 +101,7 @@ document.getElementById('adminRegisterForm').addEventListener('submit', async (e
             alert('Admin registered successfully! Login now.');
             window.location.href = 'admin-login.html';
         } else {
-            alert(data.message || 'Registration failed');
+            alert(data.error || data.message || 'Registration failed');
         }
     } catch(err){
         console.error(err);

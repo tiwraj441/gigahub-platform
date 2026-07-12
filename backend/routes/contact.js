@@ -1,13 +1,12 @@
 // routes/contact.js
 import express from "express";
 import nodemailer from "nodemailer";
-import jwt from "jsonwebtoken";
 import Enquiry from "../models/Enquiry.js";
-import User from "../models/User.js";
+import requireAuth from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.post("/", async (req, res) => {
+router.post("/", requireAuth, async (req, res) => {
   try {
     const { name, email, phone, message } = req.body;
 
@@ -16,26 +15,7 @@ router.post("/", async (req, res) => {
       return res.status(400).json({ error: "All fields are required." });
     }
 
-    // Determine the userId
-    let userId = null;
-    const authHeader = req.headers.authorization;
-    if (authHeader && authHeader.startsWith("Bearer ")) {
-      const token = authHeader.split(" ")[1];
-      try {
-        const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
-        userId = decoded.sub;
-      } catch (err) {
-        // Ignore invalid token
-      }
-    }
-
-    // Fallback to email lookup if token wasn't provided or valid
-    if (!userId) {
-      const user = await User.findOne({ email: email.toLowerCase().trim() });
-      if (user) {
-        userId = user._id;
-      }
-    }
+    const userId = req.user._id;
 
     // 1️⃣ Save enquiry to MongoDB
     const enquiry = await Enquiry.create({ 
