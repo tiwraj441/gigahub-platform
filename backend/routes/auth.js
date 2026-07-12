@@ -6,6 +6,7 @@ import validator from "validator";
 import User from "../models/User.js";
 import nodemailer from "nodemailer";
 import requireAuth from "../middleware/auth.js";
+import config from "../config.js";
 
 const router = express.Router();
 
@@ -28,7 +29,7 @@ const transporter = nodemailer.createTransport({
 function signAccessToken(user) {
   return jwt.sign(
     { sub: user._id, email: user.email },
-    process.env.JWT_ACCESS_SECRET,
+    config.JWT_ACCESS_SECRET,
     { expiresIn: ACCESS_TOKEN_EXP }
   );
 }
@@ -36,7 +37,7 @@ function signAccessToken(user) {
 function signRefreshToken(user) {
   return jwt.sign(
     { sub: user._id },
-    process.env.JWT_REFRESH_SECRET,
+    config.JWT_REFRESH_SECRET,
     { expiresIn: REFRESH_TOKEN_EXP }
   );
 }
@@ -156,7 +157,7 @@ router.post("/forgot-password", async (req, res) => {
     // Generate a short-lived reset token (15 mins)
     const resetToken = jwt.sign(
       { sub: user._id },
-      process.env.JWT_RESET_SECRET,
+      config.JWT_RESET_SECRET,
       { expiresIn: "15m" }
     );
 
@@ -206,7 +207,7 @@ router.post("/reset-password", async (req, res) => {
   if (newPassword.length < 6) return res.status(400).json({ error: "Password must be at least 6 characters" });
 
   try {
-    const payload = jwt.verify(token, process.env.JWT_RESET_SECRET);
+    const payload = jwt.verify(token, config.JWT_RESET_SECRET);
     const user = await User.findById(payload.sub);
 
     if (!user || user.resetPasswordToken !== token || Date.now() > user.resetPasswordExpires) {
@@ -238,7 +239,7 @@ router.post("/refresh", async (req, res) => {
 
     let payload;
     try {
-      payload = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+      payload = jwt.verify(token, config.JWT_REFRESH_SECRET);
     } catch (e) {
       return res.status(401).json({ error: "Invalid refresh token." });
     }
@@ -282,7 +283,7 @@ router.post("/logout", async (req, res) => {
     const token = req.cookies.refreshToken || req.body.refreshToken;
     if (token) {
       try {
-        const payload = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+        const payload = jwt.verify(token, config.JWT_REFRESH_SECRET);
         const user = await User.findById(payload.sub);
         if (user) {
           user.refreshTokens = user.refreshTokens.filter(rt => rt.token !== token);

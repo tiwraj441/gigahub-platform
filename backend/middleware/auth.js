@@ -1,6 +1,7 @@
 // middleware/auth.js
 import jwt from "jsonwebtoken";
-import User from "../models/User.js"; // note the .js extension
+import User from "../models/User.js";
+import config from "../config.js";
 
 export default async function requireAuth(req, res, next) {
   const authHeader = req.headers.authorization;
@@ -10,7 +11,7 @@ export default async function requireAuth(req, res, next) {
 
   const token = authHeader.split(" ")[1];
   try {
-    const payload = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+    const payload = jwt.verify(token, config.JWT_ACCESS_SECRET);
     const user = await User.findById(payload.sub).select("-passwordHash -refreshTokens");
     if (!user) return res.status(401).json({ error: "Unauthorized" });
 

@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import Enquiry from "../models/Enquiry.js";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import nodemailer from "nodemailer";
+import config from "../config.js";
 
 const router = express.Router();
 
@@ -15,7 +16,7 @@ export const verifyToken = (req, res, next) => {
 
   const token = authHeader.split(" ")[1];
   try {
-    const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+    const decoded = jwt.verify(token, config.JWT_ACCESS_SECRET);
     req.admin = decoded;
     next();
   } catch (err) {
@@ -67,7 +68,7 @@ router.post("/login", async (req, res) => {
     const match = await bcrypt.compare(password, admin.password);
     if (!match) return res.status(400).json({ error: "Invalid credentials" });
 
-    const token = jwt.sign({ id: admin._id, email: admin.email }, process.env.JWT_ACCESS_SECRET, { expiresIn: "1h" });
+    const token = jwt.sign({ id: admin._id, email: admin.email }, config.JWT_ACCESS_SECRET, { expiresIn: "1h" });
     res.json({ success: true, token });
   } catch (err) {
     console.error(err);
