@@ -13,6 +13,7 @@
   </div>
 
   <script>
+const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:5000' : '';
     const enquiriesList = document.getElementById("enquiriesList");
     const token = localStorage.getItem("accessToken");
 
@@ -20,7 +21,7 @@
       alert("Please log in first.");
       window.location.href = "login.html";
     } else {
-      fetch("http://localhost:5000/api/enquiries/user", {
+      fetch(`${API_BASE}/api/enquiries/user`, {
         headers: { "Authorization": "Bearer " + token }
       })
       .then(res => res.json())

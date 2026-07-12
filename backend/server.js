@@ -43,7 +43,11 @@ app.use(cors({
       'http://127.0.0.1:5000'
     ];
     
-    if (allowedOrigins.includes(origin)) {
+    if (
+      allowedOrigins.includes(origin) || 
+      origin.endsWith('.vercel.app') || 
+      (process.env.FRONTEND_URL && origin === process.env.FRONTEND_URL)
+    ) {
       return callback(null, true);
     } else {
       console.log(`CORS blocked origin: ${origin}`);  // Log for debugging

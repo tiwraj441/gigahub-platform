@@ -75,7 +75,7 @@
 
   <div class="form-container">
     <h1>Login</h1>
-    <form action="http://localhost:5000/api/auth/login" method="POST">
+    <form action="/api/auth/login" method="POST">
       <input type="email" name="email" placeholder="Email" required>
       <input type="password" name="password" placeholder="Password" required>
       <button type="submit">Login</button>
@@ -147,6 +147,7 @@ a:hover { text-decoration:underline; }
 </div>
 
 <script>
+const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:5000' : '';
 const form = document.getElementById("loginForm");
 const statusMessage = document.getElementById("statusMessage");
 const submitBtn = document.getElementById("submitBtn");
@@ -170,7 +171,7 @@ sendResetLinkBtn.addEventListener("click", async () => {
   if(!email){ resetStatus.textContent="❌ Enter your email"; resetStatus.style.color="red"; return; }
   resetStatus.textContent="⏳ Sending reset link..."; resetStatus.style.color="#1976d2";
   try{
-    const res = await fetch("http://localhost:5000/api/auth/forgot-password", {
+    const res = await fetch(`${API_BASE}/api/auth/forgot-password`, {
       method:"POST", headers:{ "Content-Type":"application/json" }, body:JSON.stringify({email})
     });
     const data = await res.json();
@@ -188,11 +189,11 @@ form.addEventListener("submit", async (e)=>{
   submitBtn.disabled=true; submitBtn.textContent="Logging In..."; showMessage("⏳ Authenticating...","loading");
 
   try{
-    let url = "http://localhost:5000/api/auth/login";
+    let url = `${API_BASE}/api/auth/login`;
     let payload = { role, email, password };
     
     if (role === "admin") {
-      url = "http://localhost:5000/api/admin/login";
+      url = `${API_BASE}/api/admin/login`;
       payload = { email, password };
     }
 

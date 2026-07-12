@@ -86,7 +86,7 @@
 
   <div class="form-container">
     <h1>Signup</h1>
-    <form action="http://localhost:5000/api/auth/register" method="POST">
+    <form action="/api/auth/register" method="POST">
       <input type="text" name="name" placeholder="Full Name" required>
       <input type="email" name="email" placeholder="Email" required>
       <input type="password" name="password" placeholder="Password" required>
@@ -144,6 +144,7 @@
   </div>
 
   <script>
+const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:5000' : '';
     const form = document.getElementById("signupForm");
     const statusMessage = document.getElementById("statusMessage");
 
@@ -164,9 +165,9 @@
       };
 
       try {
-        let url = "http://localhost:5000/api/auth/register";
+        let url = `${API_BASE}/api/auth/register`;
         if (role === "admin") {
-          url = "http://localhost:5000/api/admin/register";
+          url = `${API_BASE}/api/admin/register`;
         }
 
         // Send proper JSON to backend
