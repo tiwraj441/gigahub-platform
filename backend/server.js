@@ -101,10 +101,16 @@ mongoose.connect(process.env.MONGO_URI, {
 })
 .then(() => {
   console.log("✅ MongoDB connected");
+})
+.catch(err => console.error("❌ MongoDB error:", err));
 
-  const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000;
+
+// Only listen when not deploying on Vercel serverless environment
+if (!process.env.VERCEL) {
   app.listen(PORT, () => {
     console.log(`🚀 Main Platform + API Server running on http://localhost:${PORT}`);
   });
-})
-.catch(err => console.error("❌ MongoDB error:", err));
+}
+
+export default app;
