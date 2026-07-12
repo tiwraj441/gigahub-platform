@@ -142,4 +142,16 @@ Keep it strictly under 150 words. Do not include subject lines or greetings like
   }
 });
 
+// Delete an enquiry (admin only)
+router.delete("/enquiries/:id", verifyToken, async (req, res) => {
+  try {
+    const enquiry = await Enquiry.findByIdAndDelete(req.params.id);
+    if (!enquiry) return res.status(404).json({ error: "Enquiry not found" });
+    res.json({ success: true, message: "Enquiry deleted successfully!" });
+  } catch (err) {
+    console.error("Error deleting enquiry:", err);
+    res.status(500).json({ error: "Server error deleting enquiry" });
+  }
+});
+
 export default router;
